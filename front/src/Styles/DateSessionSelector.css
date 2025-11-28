@@ -1,0 +1,222 @@
+.date-session-wrapper {
+  background: #fdfcf8;
+  /* padding: 20px; */
+  border-radius: 12px;
+  font-family: "Inter", sans-serif;
+  color: #333;
+  width: 30%;
+  margin: auto;
+}
+
+@media (max-width: 799px) {
+  .date-session-wrapper {
+    width: 100%;
+  }
+}
+
+/* Header with scroll buttons */
+.date-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 30px;
+  /* transition: all 33s ease; */
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  /* color: blue; */
+  font-weight: bold;
+  /* transform: rotate(180deg); */
+  /* filter: invert(38%) sepia(100%) saturate(300%) hue-rotate(340deg)
+    brightness(95%) contrast(90%); */
+  transition: opacity 0.3s;
+}
+
+.nav-btn:hover {
+  opacity: 0.7;
+}
+
+/* nav button disabled/gray state */
+.nav-btn.disabled {
+  /* color: #9e9e9e; */
+  /* gray when cannot scroll further */
+  cursor: default;
+  opacity: 0.5;
+  pointer-events: none;
+  /* filter: none; */
+  filter: invert(60%) sepia(10%) saturate(0%) hue-rotate(180deg)
+    brightness(85%) contrast(85%);
+}
+
+/* Date scrolling strip */
+.date-strip {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  flex: 1;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.date-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.date-card {
+  flex-shrink: 0;
+  /* min-width: 120px; */
+  background: #fff;
+  border: 1px solid var(--copper-accents);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* gap: 4px; */
+  /* padding: 10px 8px; */
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 76px;
+  height: 64px;
+  margin-left: 0.8em;
+  box-sizing: content-box;
+}
+
+.date-card.active {
+  font-family: 'inter', sans-serif;
+  background: var(--cuminBrown);
+  color: #fff;
+  border: 2px solid var(--steel-light);
+  /* box-shadow: 0 3px 6px rgba(162, 83, 32, 0.3); */
+}
+
+.date-card.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  color: var(--secondary-text);
+  border-color: var(--secondary-text);
+  cursor: not-allowed;
+  /* opacity: 0.8; */
+  background-color: var(--steel-light)
+}
+
+.date-card .day {
+  font-weight: bold;
+  font-size: 10px;
+  /* margin-bottom: 3px; */
+  letter-spacing: -0.5px;
+}
+
+.date-card .date {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+}
+
+.date-card .weekday {
+  font-size: 12px;
+  /* opacity: 0.8; */
+  letter-spacing: -0.5px;
+  font-weight: 400;
+}
+
+/* Reset line */
+.reset-line {
+  text-align: right;
+  margin-top: 4px;
+  margin-right: 15px;
+}
+
+.reset-btn {
+  color: var(--copper-accents);
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+/* Session buttons */
+.session-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  /* gap: 10px; */
+}
+
+.session-btn-wrapper {
+  /* flex:1; */
+  background: none;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 9px 9px 0 9px;
+  transition: all 0.5s;
+  border-top: 2px solid transparent;
+}
+
+.session-btn-wrapper.active {
+  background: var(--cream-walls);
+  border-top: 2px solid var(--cuminBrown);
+}
+
+.session-btn-wrapper.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.session {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--copper-accents);
+  border-radius: 12px;
+  text-align: center;
+  padding: 12px 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.session.active {
+  background: var(--cuminBrown);
+  color: white;
+  border: 2px solid var(--steel-light);
+}
+
+.session.disabled {
+  cursor: not-allowed;
+  /* opacity: 0.6; */
+  pointer-events: none;
+  color: var(--secondary-text);
+  border-color: var(--secondary-text);
+  cursor: not-allowed;
+  /* opacity: 0.8; */
+  background-color: var(--steel-light)
+}
+
+.session .title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.session .subtext {
+  font-size: 10px;
+  opacity: 0.8;
+  line-height: 12px;
+}
+
+/* small visual hint when both sessions missing */
+.date-card.disabled .day,
+.date-card.disabled .date,
+.date-card.disabled .weekday {
+  color: var(--secondary-text);
+}

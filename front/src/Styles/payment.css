@@ -1,0 +1,109 @@
+/* Container to center the content */
+.payment-success-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+  background-color: #f0f8ff;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+/* Success icon styling with animation */
+.payment-success-icon {
+  color: #28a745;
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: bounce 1s ease-in-out infinite; /* Add bounce animation */
+}
+
+/* Failed icon styling with animation */
+.payment-failed-icon {
+  color: red;
+  font-size: 60px;
+  margin-bottom: 20px;
+  animation: shake 0.8s ease-in-out infinite; /* Add shake animation */
+}
+
+/* Title styling */
+.payment-success-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Message styling */
+.payment-success-message {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* Details section styling */
+.payment-success-details {
+  text-align: left;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Button styling */
+.payment-success-button {
+  padding: 10px 20px;
+  background-color: #6B8E23;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.payment-success-button:hover {
+  background-color: green;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-success-title {
+      font-size: 1.8rem;
+  }
+
+  .payment-success-message {
+      font-size: 1rem;
+  }
+
+  .payment-success-button {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+  }
+}
+
+/* Bounce Animation for Success Icon */
+@keyframes bounce {
+  0%, 100% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-10px);
+  }
+}
+
+/* Shake Animation for Failed Icon */
+@keyframes shake {
+  0%, 100% {
+      transform: translateX(0);
+  }
+  25% {
+      transform: translateX(-5px);
+  }
+  50% {
+      transform: translateX(5px);
+  }
+  75% {
+      transform: translateX(-5px);
+  }
+}

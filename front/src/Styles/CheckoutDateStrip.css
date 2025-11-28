@@ -1,0 +1,190 @@
+/*
+ * Create this file at: src/Styles/CheckoutDateStrip.css
+ */
+
+.checkout-date-strip-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 0;
+  /* border-bottom: 1px solid #eee; */
+  border-radius: 30px;
+  margin: 10px 0;
+  padding: 0 10px;
+  background: var(--cream-walls);
+  border: 1px solid var(--copper-accents);
+}
+
+.checkout-date-nav-btn {
+  background: #fdfcf8;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #a25320;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.checkout-date-nav-btn:hover {
+  background: #f7f7f7;
+  border-color: #a25320;
+}
+
+.checkout-date-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--secondary-text);
+}
+
+.date-strip-scroller {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 4px;
+  flex: 1;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.date-strip-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.date-card-checkout {
+  flex-shrink: 0;
+  background: var(--app-foreground, #fff);
+  border: 1px solid var(--copper-accents);
+  border-radius: 12px;
+  padding: 8px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+  /* min-width: 100px; */
+  width: 76px;
+  height: 64px;
+}
+
+.date-card-checkout.active {
+  background: var(--cuminBrown);
+  color: var(--app-foreground);
+  border-color: var(--steel-light);
+  /* box-shadow: 0 3px 6px rgba(162, 83, 32, 0.3); */
+}
+
+/* --- ADD THIS NEW STYLE --- */
+.date-card-checkout.disabled {
+  color: var(--secondary-text);
+  border-color: var(--secondary-text);
+  cursor: not-allowed;
+  /* opacity: 0.8; */
+  background-color: var(--steel-light);
+}
+
+.date-card-checkout .day {
+  font-weight: medium;
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+.date-card-checkout .date {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Session Button Styles */
+.checkout-session-selector {
+  display: flex;
+  gap: 10px;
+  /* margin-bottom: 16px; */
+  /* padding: 0 10px; */
+  width:100%;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cream-walls);
+}
+.checkout-session-btn-wrapper {
+  /* flex: 1; */
+  width: 50%;
+  padding: 8px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  margin-top: 10px;
+  background-color: var(--cream-walls);
+  border-top: solid 2px transparent;
+  transition: all 0.3s ease;
+}
+.checkout-session-btn-wrapper.active {
+ border-color: var(--cuminBrown);
+ background-color:var(--app-foreground)
+}
+
+.checkout-session-btn {
+  font-family: "Inter", sans-serif;
+  /* flex: 1; */
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  border: 1.5px solid var(--copper-accents);
+  border-radius: 12px;
+  background-color: var(--app-foreground);
+  color: var(--primary-text);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content: center;
+  /* gap:5px */
+}
+
+.checkout-session-btn span:first-child {
+  font-size: 14px;
+  font-weight: bold;
+}
+ .checkout-session-btn span:last-child {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.checkout-session-btn.active {
+  background: var(--cuminBrown);
+  color: var(--app-foreground);
+  border-color: var(--secondary-text);
+}
+
+.checkout-session-btn:disabled {
+  background-color: var(--steel-light);
+  color: var(--secondary-text);
+  border-color: var(--secondary-text);
+  cursor: not-allowed;
+  /* opacity: 0.7; */
+}
+
+.delete-slot-wrapper{
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width:100%;
+  padding: 3px 10px;
+}
+
+.delete-slot-button {
+  color: var(--cuminBrown);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 10px;
+  /* gap: 5px; */
+}

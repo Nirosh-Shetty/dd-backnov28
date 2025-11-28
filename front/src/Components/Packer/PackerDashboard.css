@@ -1,0 +1,346 @@
+
+/* PackerDashboard.css */
+.packer-dashboard-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f4f4f9, #e9ecef);
+  padding: 0;
+}
+/* Overlay covers the entire page */
+.loading-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Custom spinner styling */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Loading container styling */
+.loading-container {
+  /* background: #7f7f7f; */
+    padding: 17px 74px;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+    display: flex
+;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    gap: 10px;
+}
+
+/* Show overlay when active */
+.loading-overlay.active {
+    display: flex;
+}
+.packer-main-content {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+}
+
+.packer-welcome-card {
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.packer-welcome-card:hover {
+  transform: translateY(-5px);
+}
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.form-check-input:checked {
+  background-color: #6B8E23;
+  border-color: #6B8E23;
+}
+
+.dropdown-menu {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+}
+
+.packer-location-select {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+}
+
+.packer-location-select:focus {
+  border-color: #f69089;
+  box-shadow: 0 0 0 0.25rem rgba(253, 53, 13, 0.25);
+}
+.packer-table-responsive {
+  max-height: 900px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.packer-table-responsive table {
+  margin-bottom: 0;
+}
+
+.table-hover tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  /* background-color: #F81E0F; */
+  background-color: #6b8e23 !important;
+  color: white;
+  font-weight: bold;
+}
+
+.packer-print-btn,
+.packer-logout-btn,
+.packer-back-btn,
+.packer-nav-btn,
+.packer-view-btn,
+.packer-missing-btn {
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.packer-print-btn:hover,
+.packer-logout-btn:hover,
+.packer-back-btn:hover,
+.packer-nav-btn:hover,
+.packer-view-btn:hover,
+.packer-missing-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.packer-missing-btn:disabled {
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.packer-slot-select,
+.packer-location-select,
+.packer-driver-select,
+.packer-status-select,
+.packer-delay-reason,
+.packer-driver-assign {
+  border-radius: 8px;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  background: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.packer-slot-select:focus,
+.packer-location-select:focus,
+.packer-driver-select:focus,
+.packer-status-select:focus,
+.packer-delay-reason:focus,
+.packer-driver-assign:focus {
+  border-color: #F81E0F;
+  box-shadow: 0 0 8px rgba(248, 30, 15, 0.3);
+  outline: none;
+}
+
+.packer-toggle-btn {
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.packer-toggle-btn.active {
+  background-color: #F81E0F !important;
+  color: white !important;
+}
+
+.packer-toggle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.packer-order-modal {
+  /* max-width: 90%; */
+  margin: 1rem auto;
+}
+
+.packer-order-modal-content {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  animation: slide-in 0.3s ease;
+}
+
+.packer-order-modal-content.slide-left {
+  animation: slide-left 0.3s ease forwards;
+}
+
+.packer-order-modal-content.slide-right {
+  animation: slide-right 0.3s ease forwards;
+}
+
+.packer-item-card {
+  border-radius: 8px;
+  background: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.packer-item-card:hover {
+  transform: translateX(5px);
+}
+
+.packer-checkbox {
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+
+.packer-bag-input {
+  max-width: 150px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+}
+
+.packer-bag-input:focus {
+  border-color: #F81E0F;
+  box-shadow: 0 0 8px rgba(248, 30, 15, 0.3);
+  outline: none;
+}
+
+.packer-products-modal {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .packer-main-content {
+    padding: 1rem;
+  }
+
+  .packer-welcome-card {
+    padding: 1rem;
+  }
+
+  .packer-table-responsive {
+    max-height: 800px;
+    overflow-x: auto;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .packer-slot-select,
+  .packer-location-select,
+  .packer-driver-select,
+  .packer-status-select,
+  .packer-delay-reason,
+  .packer-driver-assign {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+
+  .packer-toggle-btn {
+    width: 100%;
+  }
+
+  .packer-order-modal {
+    /* max-width: 95%; */
+  }
+
+  .packer-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .packer-bag-input,
+  .packer-driver-assign,
+  .packer-delay-reason {
+    width: 100%;
+  }
+
+  .packer-missing-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  h5 {
+    font-size: 1.1rem;
+  }
+
+  .packer-welcome-title {
+    font-size: 1rem;
+  }
+
+  .packer-print-btn,
+  .packer-logout-btn,
+  .packer-back-btn,
+  .packer-nav-btn,
+  .packer-view-btn,
+  .packer-missing-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .packer-item-card h6 {
+    font-size: 0.9rem;
+  }
+
+  .packer-item-card small {
+    font-size: 0.8rem;
+  }
+}

@@ -1,0 +1,441 @@
+.myaccount-component {
+  /* display: none; */
+  padding: 20px 100px;
+  width: 30%;
+}
+
+.profilecontainer{
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-container{
+  width: 100%;
+  height: 200px;
+  /* box-shadow: 0px 1px 15px 1px black; */
+}
+
+/* .profile-container { */
+  /* box-shadow: 0 2px 6px 0 rgba(218, 218, 253, 0.65),
+      0 2px 6px 0 rgba(206, 206, 238, 0.54); */
+  /* width: 30%;
+  height: 300px;
+  box-shadow: 0px 1px 15px 1px black; */
+/* } */
+
+.profile-user {
+  width: 60%;
+  padding: 10px 0;
+  height: 200px;
+}
+
+.user-name {
+  padding: 10px 0;
+  margin: 0px;
+  text-align: center;
+}
+.edit-icon {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  color: green;
+}
+
+.user-picture {
+  width: 100px;
+  height: 100px;
+  margin: 22px auto;
+  border-radius: 50%;
+  align-items: center;
+  border: 8px solid rgb(252, 236, 236);
+  text-align: center;
+  justify-content: center;
+  display: flex;
+}
+
+.location-container {
+  display: flex;
+  padding: 10px 95px;
+  gap: 6px;
+  margin: auto;
+  justify-content: flex-start;
+}
+
+.location-icon {
+  width: 20px;
+  height: 23px;
+}
+
+.location-name {
+  padding: 0px;
+  margin: 0px;
+}
+
+.profile-container-2 {
+  /* box-shadow: 0 2px 6px 0 rgba(218, 218, 253, 0.65),
+      0 2px 6px 0 rgba(206, 206, 238, 0.54); */
+  width: 100%;
+  height: 300px;
+  /* box-shadow: 0px 1px 15px 1px black; */
+  
+}
+
+.profile-content-display {
+  display: flex;
+  gap: 40px;
+
+}
+
+.profile-user-deatils {
+  text-align: left;
+  width: 100%;
+}
+
+.profile-user-title {
+  padding: 10px 0;
+  margin: 0;
+  text-align: left;
+}
+
+.profile-user-subtitle {
+  padding: 6px;
+  text-align: left;
+}
+
+.edit-change-button {
+  display: flex;
+  padding: 0 40px;
+  gap: 30px;
+}
+
+.edit-profile-details {
+  text-align: center;
+  margin: auto;
+  display: flex;
+}
+
+.invoice-details {
+  display: flex;
+  height: auto;
+}
+/* Web View End */
+
+/* Mobile View Start */
+
+@media screen and (max-width: 799px) {
+  .myaccount-component {
+    display: block;
+    padding: 20px;
+    width: 100%;
+  }
+
+  .profile-container {
+    width: auto;
+  }
+  .invoice-details {
+    display: block;
+    height: auto;
+  }
+  .profile-container-2 {
+    width: auto;
+    margin: 0;
+  }
+  .profile-user-deatils {
+    padding: 10px 2px !important;
+    text-align: left;
+  }
+  /* .booked-pooja-img{
+    width: 100% !important;
+  } */
+  .first-box {
+    padding: 5px 10px !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .profile-container {
+    height: auto;
+    width: auto;
+  }
+}
+
+/* Mobile View End */
+
+/* Order Details  */
+
+/* Web View Start */
+
+.Booked-history-component {
+  padding: 10px 100px;
+}
+
+.Booked-history-buttons {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+}
+
+.booked-title {
+  padding: 5px 10px;
+  border: 1px solid rgb(255, 255, 255);
+  background: black;
+  border-radius: 5px;
+  color: white;
+}
+
+.invoice-header {
+  flex: 1;
+}
+
+.first-box {
+  height: 7rem;
+  display: flex;
+  padding: 5px 20px;
+  background: black;
+  color: white;
+}
+
+.order-details {
+  flex: auto;
+}
+
+.order-display {
+  border: 2px solid lightgray;
+  display: flex;
+  padding: 5px 20px;
+  margin: 5px 0;
+}
+
+.booked-car-img {
+  width: 150px;
+  height: 100px;
+  border: 1px solid;
+}
+
+.view-button {
+  display: flex;
+  justify-content: center;
+}
+
+.view {
+  padding: 3px 16px;
+  text-decoration: underline !important;
+  background: black !important;
+  border: none !important;
+  color: white;
+}
+
+.modal-logo {
+  width: 40%;
+  height: 150px;
+  display: flex;
+}
+
+.download {
+  /* background: purple !important; */
+  background: black !important;
+  border: none;
+  color: white;
+}
+
+/* Web View End */
+
+/* Mobile View Start */
+
+@media screen and (max-width: 799px) {
+  .Booked-history-component {
+    padding: 10px;
+  }
+
+  .order-details h5 {
+    font-size: 12px;
+  }
+
+  .order-details p {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .order-details-container {
+    display: block;
+  }
+
+  .table {
+    /* display: grid; */
+  }
+  .order-display {
+    display: block;
+    padding: 5px 10px;
+  }
+  .profile-content-display {
+    display: flex;
+    gap: 20px !important;
+    padding: 0px 10px !important;
+  }
+}
+
+/* Mobile View End */
+
+/* review modal  */
+
+.comment-box {
+  padding: 5px;
+}
+
+.comment-area textarea {
+  resize: none;
+  border: 1px solid black;
+}
+
+.form-control:focus {
+  color: black;
+  border-color: black;
+  outline: 0;
+  box-shadow: 0 0 0 1px black !important;
+}
+
+.send {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.send:hover {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.rating {
+  display: inline-flex;
+  flex-direction: row-reverse;
+}
+
+.rating > input {
+  display: none;
+}
+
+.rating > label {
+  position: relative;
+  width: 28px;
+  font-size: 35px;
+  color: black;
+  cursor: pointer;
+}
+
+.rating > label::before {
+  content: "\2605";
+  position: absolute;
+  opacity: 0;
+}
+
+.rating > label:hover:before,
+.rating > label:hover ~ label:before {
+  opacity: 1 !important;
+}
+
+.rating > input:checked ~ label:before {
+  opacity: 1;
+}
+
+.rating:hover > input:checked ~ label:before {
+  opacity: 0.4;
+}
+
+/* Wallet  */
+
+.wallet-icond-text {
+  display: flex;
+  gap: 12px;
+}
+
+.addres-box {
+  display: flex;
+  gap: 25px;
+  text-align: left;
+  height: 300px;
+  overflow: auto;
+}
+
+.dropbtn {
+  background-color: white;
+  color: black;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+  background-color: white;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 100px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content p {
+  color: black;
+  padding: 5px 12px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.dropdown a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+
+.order-icond-text {
+  display: flex;
+  gap: 30px;
+  /* align-items: center; */
+}
+
+.delivered-btn {
+  background: rgb(170, 168, 168);
+  color: black;
+  font-size: 13px;
+  border: none;
+}
+
+.order-tabs{
+  display: flex;
+  justify-content: space-between;
+}
+
+@media screen and (max-width: 799px) {
+  .add-gr {
+    margin-left: 0px !important;
+  }
+  .edit-change-button {
+    display: flex;
+    padding: 0px;
+    gap: 20px;
+    justify-content: center;
+  }
+  .order-tabs{
+    display: block;
+  }
+
+}

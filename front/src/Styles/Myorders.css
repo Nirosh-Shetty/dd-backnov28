@@ -1,0 +1,416 @@
+/*
+
+
+.bike {
+  width: 200px;
+  height: auto;
+  margin: 20px 0;
+}
+
+.road {
+  width: 400px;
+  height: 2px;
+  background-color: gray;
+  align-items: center;
+  text-align: center;
+  margin: auto;
+  position: relative;
+  bottom: -115px;
+}
+
+.rating-img {
+  width: 100%;
+  height: 25px;
+}
+
+.mobile-view-orderlist {
+  display: none !important;
+} */
+.bike {
+  width: 200px;
+  height: auto;
+  margin: 20px 0;
+}
+
+.status-title {
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+
+.order-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  border: none;
+}
+
+.status-step {
+  display: flex;
+  align-items: center;
+  /* position: relative; */
+  width: 100%;
+
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #f0f0f0;
+  color: white;
+  font-size: 14px;
+}
+
+.completed .circle {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.pending {
+  background-color: #999;
+  border-color: #999;
+}
+
+.status-label {
+  font-size: 14px;
+  color: #333;
+  margin: 10px -8px;
+}
+
+.completed .status-label {
+  color: #4caf50;
+}
+
+.line {
+  width: 60px;
+  height: 2px;
+  background-color: #f0f0f0;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.completed .line {
+  background-color: #4caf50;
+}
+
+.order-delivery-status {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: auto;
+}
+
+.order-card {
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px 0;
+  width: 100% !important;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid green; */
+
+}
+
+.orderspage-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 5px;
+}
+
+.web-screen {
+  display: none !important;
+}
+
+.mobile-view-orderlist {
+  display: block !important;
+  padding: 10px;
+  width: 30%;
+  /* border: 1px solid black; */
+}
+
+.ordermain {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.my-order-first-tab {
+  display: flex;
+  gap: 10px;
+  border: 1px solid orangered;
+  padding: 10px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #34b934;
+  width: 100%;
+  margin: 10px 0;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.mbl-line {
+  width: 65px;
+  height: 2px;
+  background-color: #f0f0f0;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.completed .mbl-line {
+  background-color: #4caf50;
+}
+
+.productImges {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.deliveryStatusCard {
+  /* border: 1px solid rgb(226, 224, 224); */
+  width: 100%;
+  border-radius: 10px;
+  height: auto;
+}
+
+.needhelp {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #ffc156;
+  color: black;
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.orderHead {
+  margin-bottom: 10px;
+}
+
+.bottombtn {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-around;
+
+}
+
+.completed {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  color: black;
+}
+
+.download {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #6B8E23 !important;
+  color: white;
+  cursor: pointer;
+}
+
+.centerneed {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ffc156;
+  color: black;
+}
+
+.gifimg {
+  width: 20px;
+  height: 20px;
+}
+
+@media screen and (max-width: 799px) {
+  .road {
+    width: 200px;
+    position: relative;
+    bottom: -100px;
+
+  }
+
+  .bike {
+    width: 200px;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  /* .line {
+    width: 70px;
+    
+  } */
+  .line {
+    width: 60px;
+    height: 2px;
+    background-color: #f0f0f0;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  .web-screen {
+    display: none !important;
+  }
+
+  .mobile-view-orderlist {
+    display: block !important;
+    padding: 10px;
+    width: 100% !important;
+  }
+
+  .my-order-first-tab {
+    display: flex;
+    gap: 10px;
+    border: 1px solid orangered;
+    padding: 10px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #34b934;
+    width: 100%;
+    margin: 10px 0;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .mbl-line {
+    width: 65px;
+    height: 2px;
+    background-color: #f0f0f0;
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+
+  .completed .mbl-line {
+    background-color: #4caf50;
+  }
+
+  .imagecard {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .orderHead {
+    margin-bottom: 10px;
+  }
+
+  .bottombtn {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: space-around;
+
+  }
+
+  .completed {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    color: black;
+  }
+
+  .download {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #6B8E23 !important;
+    color: white;
+    cursor: pointer;
+  }
+
+  .centerneed {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffc156;
+    color: black;
+  }
+
+  .gifimg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .productImges {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .status-step {
+    display: flex;
+    align-items: center;
+    /* position: relative; */
+    width: 100%;
+  }
+
+  .deliveryStatusCard {
+    /* border: 1px solid rgb(226, 224, 224); */
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+  }
+
+  .order-delivery-status {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    height: auto;
+  }
+
+  .order-status-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+  }
+
+  .status-label {
+    font-size: 14px;
+    color: #333;
+    /* margin: 10px -8px; */
+    width: 80px;
+    /* border: 1px solid black; */
+  }
+
+  .needhelp {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #ffc156;
+    color: black;
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}

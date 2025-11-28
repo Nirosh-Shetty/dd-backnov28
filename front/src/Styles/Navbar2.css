@@ -1,0 +1,175 @@
+/* .profile-container {
+  width: 100%;
+  max-width: 450px; 
+  margin: auto;
+  background-color: #f7f7f7; 
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+} */
+
+/* .profile-container-in-offcanvas{
+  background-color: #F8F6F0;
+} */
+
+.profile-header {
+  background-color: var(--success-green, #6b8e23); /* App's primary green */
+  color: white;
+  padding: 0px 15px 16px 10px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.avatar-icon {
+  color: #6b8e23;
+}
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-bottom: 5px;
+}
+
+.user-details h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  /* gap: 4px; */
+}
+
+.user-details p {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.9;
+  word-break: break-all;
+}
+
+.profile-body {
+  padding: 25px 15px;
+  flex-grow: 1;
+}
+
+.top-widgets {
+  margin-bottom: 25px;
+}
+
+.widget-card {
+  background-color: #FAFAFA;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  transition: transform 0.2s ease-in-out;
+  height: 56px;
+  font-weight: 500;
+}
+
+.widget-card:hover {
+  transform: translateY(-3px);
+  color: #333;
+}
+
+.widget-icon {
+  color: #6b8e23;
+  margin-right: 12px; /* Space between icon and text */
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nav-item {
+  height: 56px;
+  background-color: #FAFAFA;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.nav-item:hover {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.nav-item-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 500;
+}
+
+.nav-icon {
+  color: #6b8e23;
+  display: flex;
+  align-items: center;
+}
+
+.nav-chevron {
+  color: #c0c0c0;
+}
+
+.nav-back-btn {
+  background: none;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  z-index: 2;
+  color: white;
+}
+.nav-back-btn .icon-img-l {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) invert(1); /* Changes black SVG to white */
+}
+
+.nav-item-content .icon-img-l,
+.widget-card .icon-img-l {
+  filter: invert(49%) sepia(21%) saturate(1054%) hue-rotate(43deg) brightness(91%) contrast(85%);
+}
+
+.nav-item > .icon-img-l {
+   /* This filter converts black to #c0c0c0 */
+  filter: invert(85%) sepia(0%) saturate(231%) hue-rotate(188deg) brightness(88%) contrast(93%);
+}

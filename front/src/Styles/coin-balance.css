@@ -1,0 +1,181 @@
+.coin-card {
+    width: 100%;
+    /* max-width: 350px; */
+    /* border-radius: 20px; */
+    overflow: hidden;
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
+    /* border: none; */
+    border:1px solid #6B8E23;
+     padding: 0;
+    border-bottom-left-radius: 12px; /* Radius for the bottom-left corner */
+    border-bottom-right-radius: 12px;
+    border-top-left-radius: 25px; /* Radius for the bottom-left corner */
+    border-top-right-radius: 25px;
+    
+  }
+  .coin-header {
+    background: linear-gradient(to right, #6B8E23, #9eca44);
+    padding: 2px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    border-bottom-left-radius: 25px; /* Radius for the bottom-left corner */
+    border-bottom-right-radius: 25px;
+    border-top-left-radius: 25px; /* Radius for the bottom-left corner */
+    border-top-right-radius: 25px;
+    margin-bottom: 0; /* Remove the bottom margin */
+ }
+  .coin-stack-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .balance-text {
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .balance-amount {
+    font-size: 28px;
+    font-weight: bold;
+    display: block;
+  }
+  
+  .coin-value {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+  
+  .info-icon {
+    width: 20px;
+    height: 20px;
+  }
+  .expiring-notice {
+    padding: 2px 15px;
+    /* border-bottom: 2px solid red;
+    border-left: 2px solid red;
+    border-right: 2px solid red; */
+    text-align: center;
+    font-size: 14px;
+    border-bottom-left-radius: 10px; /* Radius for the bottom-left corner */
+    border-bottom-right-radius: 10px;
+    margin-top: 0;
+  }
+  .bold-text {
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .expiring-text {
+    color: #6B8E23;
+  }
+  
+  .transactions {
+    padding: 10px 0;
+  }
+  
+  .transaction-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .transaction-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+  }
+  
+  .transaction-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .warning-img {
+    filter: hue-rotate(45deg);
+  }
+  
+  .transaction-text {
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 500;
+    font-weight: bold;
+    text-align: left;
+  }
+  
+  .transaction-amount {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: right;
+    min-width: 50px;
+  }
+  
+  .positive {
+    color: #28a745;
+    font-size: x-large;
+  }
+  
+  .negative {
+    color: #6B8E23;
+    font-size: x-large;
+  }
+  
+  .coin-stack {
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  .coin {
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    animation: showCoin 1s forwards, shine 2s infinite;
+  }
+
+  .coin-balance-card {
+    display: flex;
+    padding: 16px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #6B8E23;
+    border-radius: 16px;
+
+    width: 100%;
+
+ 
+    border-radius: 20px;
+    border: 1px solid #E6B800;
+    background: #FFF8DC;
+    position: relative;
+    /* padding-top: 24px; */
+  }
+
+  .coin-balance-text {
+    color: #2C2C2C;
+    font-family: Inter;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px; /* 129.412% */
+    letter-spacing: -0.68px;
+    width: 95%;
+
+  }
+
+  .coin-balance-text-icon {
+    width: 20px;
+    height: 20px;
+    color: #2C2C2C;
+    cursor: pointer;
+    stroke-width: 1px;
+    position: absolute;
+    right: 12px;
+    top: 10px;
+  }

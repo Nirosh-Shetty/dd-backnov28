@@ -1,0 +1,47 @@
+.edit-btn {
+  border: 1px solid #6B8E23 !important;
+  color: #6B8E23 !important;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+  background-color: #6B8E23 !important;
+  color: white !important;
+}
+
+
+.delete-btn {
+  border: 1px solid #dc3545 !important;
+  color: white !important;
+  background-color: #dc3545 !important;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: white !important;
+  color: #dc3545 !important;
+}
+
+.default-btn {
+  border: 1px solid #6B8E23 !important;
+  color: #6B8E23 !important;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  background-color: white !important;
+}
+
+.default-btn:hover {
+  background-color: #6B8E23 !important;
+  color: white !important;
+}

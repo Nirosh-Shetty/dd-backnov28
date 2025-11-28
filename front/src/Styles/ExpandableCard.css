@@ -1,0 +1,89 @@
+.expandable-card {
+  background-color: var(--app-foreground);
+  border-radius: 16px;
+  margin: 0 16px 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.expandable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.expandable-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.expandable-icon-wrapper {
+  color: var(--primary-text);
+}
+
+.expandable-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.expandable-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-text);
+  margin: 0;
+}
+
+.expandable-subtitle {
+  font-size: 12px;
+  color: var(--secondary-text);
+  margin: 2px 0 0 0;
+}
+
+.expandable-chevron {
+  color: var(--secondary-text);
+  transition: transform 0.3s ease;
+}
+
+.expandable-chevron.open {
+  transform: rotate(180deg);
+}
+
+.expandable-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+.expandable-content.open {
+  max-height: 1000px; /* Adjust if content is taller */
+  transition: max-height 0.5s ease-in;
+}
+
+.expandable-content-inner {
+  padding: 0 16px 8px 16px;
+}
+
+/* --- UPDATED: Replace old .expandable-chevron styles with these --- */
+.css-chevron {
+  border: solid var(--secondary-text);
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transition: transform 0.3s ease;
+  transform: rotate(45deg); /* Down arrow */
+  -webkit-transform: rotate(45deg);
+}
+
+.css-chevron.open {
+  transform: rotate(-135deg); /* Up arrow */
+  -webkit-transform: rotate(-135deg);
+}
+
+/* ... keep the rest of the file the same ... */

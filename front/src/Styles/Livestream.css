@@ -1,0 +1,23 @@
+.video-item {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+    height: auto;
+  }
+  .livecontainer{
+    width: 100%;
+  }
+  .livestream{
+    width: 30%;
+  }
+  .livestream>h1{
+    font-size: 35px;
+  }
+ 
+
+  @media screen and (max-width: 799px) {
+    .livestream{
+      display: block;
+      width: 100%;
+    }
+  }

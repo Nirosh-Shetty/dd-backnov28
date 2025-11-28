@@ -1,0 +1,219 @@
+.mu-container {
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 8px;
+  /* max-width and margin:auto removed */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  width: 100%; 
+}
+
+.mu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.mu-header h3 {
+  margin: 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.mu-product-search-container {
+  position: relative;
+}
+
+.mu-search-wrapper {
+  position: relative;
+}
+
+.mu-search-wrapper .form-control {
+  padding-right: 40px;
+}
+
+.mu-search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+.mu-search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* This matches your screenshot */
+.mu-search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mu-search-result-item:hover {
+  background-color: #f9f9f9;
+}
+
+.mu-search-result-item:last-child {
+  border-bottom: 0;
+}
+
+.mu-search-result-item img {
+  width: 50px; /* Larger image as requested */
+  height: 50px;
+  border-radius: 4px;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.mu-search-result-item span {
+  flex-grow: 1;
+  font-weight: 500;
+  color: #333;
+}
+
+.mu-search-result-item .btn {
+  font-weight: bold;
+}
+
+/* This matches your screenshot */
+.mu-added-list {
+  margin-top: 24px;
+}
+
+.mu-added-list-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 15px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  min-height: 60px;
+}
+
+.mu-no-items {
+  color: #888;
+  font-style: italic;
+  margin: auto 0;
+}
+
+.mu-added-item-tag {
+  display: inline-flex;
+  align-items: center;
+  background: #6b8e23;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mu-added-item-tag button {
+  background: none;
+  border: none;
+  color: white;
+  margin-left: 10px;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.8;
+  font-size: 16px;
+}
+
+.mu-added-item-tag button:hover {
+  opacity: 1;
+}
+
+.mu-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+  border-top: 2px solid #f0f0f0;
+  padding-top: 24px;
+}
+
+/* --- View 2 Styles (Hub Assignment) --- */
+
+/* This matches your screenshot */
+.mu-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+}
+
+.mu-item-header h4 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.mu-item-counter {
+  background: #6b8e23;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 16px;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* This matches your screenshot */
+.mu-hub-table {
+  background: #fff;
+}
+
+.mu-hub-table th {
+  background: #f4f4f4;
+  font-weight: 600;
+}
+
+.mu-hub-table .form-control {
+  max-width: 120px;
+  text-align: center;
+}
+
+.mu-hub-table td {
+  vertical-align: middle;
+}
+
+.row-disabled {
+  background: #f8f8f8;
+  opacity: 0.6;
+}
+
+.row-disabled td {
+  background: #f8f8f8 !important;
+}

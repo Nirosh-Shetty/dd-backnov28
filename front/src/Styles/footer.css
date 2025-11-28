@@ -1,0 +1,83 @@
+.footer-container {
+  padding: 20px;
+  background-color: white;
+  border-top: 1px solid lightgray;
+}
+
+.navbar-logo {
+  width: 100px;
+  height: 65px;
+  background: transparent;
+}
+
+.col-md-4 h3 {
+  color: green;
+  font-size: 26px;
+  text-decoration: underline;
+}
+.footer-content {
+  text-align: left;
+}
+.playstore {
+  width: 100%;
+}
+.contact-us-tab{
+  text-align: left;
+}
+.links{
+  text-align: left;
+}
+.quick-links-item li {
+  list-style: none;
+}
+.quick-links-item {
+  /* padding: 0 110px; */
+  color: black;
+}
+
+.s-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.download-apps {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+@media screen and (max-width: 799px) {
+  .footer {
+    /* display: block; */
+    padding: 40px 20px !important;
+  }
+  .footer-container {
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid lightgray;
+  }
+  .quick-links-item {
+    text-align: left;
+    padding: 0 12px;
+  }
+  .links {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .f-contct {
+    text-align: left;
+  }
+  .s-icons {
+    display: flex;
+    justify-content: left;
+    gap: 20px;
+  }
+  .green-button {
+    display: flex;
+  }
+  .download-apps {
+    display: flex;
+    gap: 10px;
+    justify-content: left;
+  }
+}

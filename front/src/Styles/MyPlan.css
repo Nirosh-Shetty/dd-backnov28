@@ -1,0 +1,46 @@
+.mainbg {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+.checkoutcontainer {
+  width: 300px;
+  margin: 0 auto;
+  background: white;
+  min-height: 100vh;
+  position: relative;
+}
+
+.screen-checkout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.checkout-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+}
+@media (max-width: 480px) {
+  .checkoutcontainer {
+    max-width: 100%;
+    margin: 0;
+  }
+  .mobile-banner-updated {
+    padding: 12px 16px;
+  }
+  .screen-checkout {
+    gap: 8px;
+  }
+  .checkout-title {
+    font-size: 18px;
+  }
+}

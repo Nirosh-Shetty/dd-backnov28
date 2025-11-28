@@ -1,0 +1,783 @@
+/* Validate Component Styles */
+  .validate-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100vh; /* Force full viewport height */
+    background-color: #F8F6F0; /* Colors.warmmarble */
+    width: 100%;
+    max-width: 100vw; /* Full width on mobile */
+    margin: 0;
+    font-family: "InterVariable", sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+  .paste-section{
+    display: flex;
+    justify-content: center;
+  }
+  .validate-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 24px 12px 12px;
+    gap: 16px;
+    background-color: #F8F6F0; /* Colors.warmmarble */
+    border-bottom: 0.4px solid #6B6B6B; /* Colors.primaryText */
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px rgba(107, 107, 107, 0.3);
+    width: 100%;
+    margin: 0;
+    position: relative;
+    z-index: 10;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #2C2C2C; /* Colors.primaryText */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+  
+  .back-button:hover {
+    color: #6B8E23; /* Colors.greenCardamom */
+  }
+  
+  .header-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .validate-title {
+    font-size: 20px; /* Typography.headingS */
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: -1px;
+    color: #2C2C2C; /* Colors.primaryText */
+    margin: 0;
+  }
+  
+  .validate-content {
+    /* flex: 1; */
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    z-index: 5;
+    justify-content: space-between;
+  }
+
+  .back-button-icon {
+    color: #2C2C2C; /* Colors.primaryText */
+    height: 36px;
+    width: 36px;
+  }
+  .validate-subtitle {
+    font-size: 16px; /* Typography.bodyM */
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: -0.8px;
+    color: #2C2C2C; /* Colors.secondaryText */
+    text-align: center;
+    margin: 16px 0 8px 0;
+  }
+  
+  .phone-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 36px;
+    gap: 6px;
+  }
+  
+  .whatsapp-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .phone-number {
+    font-size: 16px; /* Typography.bodyM */
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: -0.8px;
+    color: #2C2C2C; /* Colors.greenCardamom */
+  }
+  
+  .otp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px 0;
+    gap: 12px;
+  }
+  
+  .otp-input {
+    display: flex;
+    width: 48px;
+    height: 48px;
+    padding: 10px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    border-radius: 16px;
+    border: 1px solid var(--success-green, #6B8E23);
+    background: var(--app-foreground, #FAFAFA);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.25);
+    padding: 10px 16px;
+    color: var(--Primary-Text, #2C2C2C);
+    font-family: Inter;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 27px; /* 122.727% */
+    letter-spacing: -0.88px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+  
+  .otp-input:focus {
+    border-color: #556B1F;
+    box-shadow: 0 0 0 2px rgba(107, 142, 35, 0.2);
+    transform: scale(1.05);
+  }
+  
+  .otp-input:hover {
+    border-color: #556B1F;
+  }
+
+  .otp-input.active {
+    border-color: #556B1F;
+    box-shadow: 0 0 0 2px rgba(107, 142, 35, 0.2);
+    transform: scale(1.05);
+  }
+  
+  .resend-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 24px;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  
+  .resend-text {
+    font-size: 16px; /* Typography.bodyM */
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: -0.8px;
+    color: #2C2C2C; /* Colors.secondaryText */
+  }
+  
+  .resend-timer-wrapper {
+    min-width: 130px;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .resend-timer {
+    font-size: 14px; /* Typography.bodyM */
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: -0.7px;
+    color: #6B6B6B; /* Colors.secondaryText */
+  }
+  
+  .resend-countdown {
+    font-size: 14px; /* Typography.bodyM */
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: -0.7px;
+    color: #6B6B6B; /* Colors.secondaryText */
+  }
+  
+  .resend-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .resend-now {
+    font-size: 14px; /* Typography.bodyM */
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: -0.7px;
+    color: #6B6B6B; /* Colors.secondaryText */
+    /* text-decoration: underline; */
+    transition: color 0.2s ease;
+  }
+  
+  .resend-now:hover {
+    color: #556B1F;
+  }
+
+  /* Spinning animation for loading icon */
+  .spinning {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .verify-button {
+    background-color: #6B8E23; /* Colors.greenCardamom */
+    padding: 16px 20px;
+    border-radius: 16px;
+    margin: 24px 0;
+    align-self: center;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(107, 142, 35, 0.2);
+  }
+  
+  .verify-button:hover {
+    background-color: #556B1F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(107, 142, 35, 0.3);
+  }
+  
+  .verify-button:active {
+    transform: translateY(0);
+  }
+  
+  .verify-text {
+    font-size: 16px; /* Typography.cardTitle */
+    font-weight: 700;
+    line-height: 21px;
+    letter-spacing: -0.8px;
+    color: #FAFAFA; /* Colors.appForeground */
+    text-align: center;
+  }
+  
+  .other-login-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    margin: 24px 0;
+    align-self: center;
+  }
+  
+  .other-login-text {
+    font-size: 16px; /* Typography.cardTitle */
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: -0.8px;
+    color: #6B8E23; /* Colors.greenCardamom */
+    text-decoration: underline;
+    text-align: center;
+    transition: color 0.2s ease;
+  }
+  
+  .other-login-text:hover {
+    color: #556B1F;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 320px) {
+    .validate-container {
+      max-width: 100%;
+    }
+    
+    .otp-container {
+      gap: 8px;
+    }
+    
+    .otp-input {
+      width: 32px;
+      height: 44px;
+    }
+    
+    .resend-section {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+    
+    .resend-timer-wrapper {
+      min-width: auto;
+    }
+  }
+  
+  /* Desktop view - centered with shadow */
+  @media (min-width: 769px) {
+    .validate-container {
+      position: relative;
+      top: auto;
+      left: auto;
+      right: auto;
+      bottom: auto;
+      max-width: 400px;
+      margin: 0 auto;
+      min-height: calc(100vh - 40px);
+      height: auto;
+      border-radius: 24px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      overflow: visible;
+    }
+    
+    .validate-header {
+
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+    }
+    
+    .virtual-keyboard {
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* Focus trap for better accessibility */
+  .otp-input:focus {
+    z-index: 1;
+    position: relative;
+  }
+
+  /* Virtual Keyboard Styles */
+  .virtual-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 16px 16px 32px 16px; /* Add extra bottom padding */
+    background-color: #F8F6F0; /* Colors.warmmarble - same as header */
+
+    border-bottom-left-radius: 24px; /* Add bottom border radius for mobile */
+    border-bottom-right-radius: 24px;
+    box-shadow: 0 -4px 6px rgba(107, 107, 107, 0.3);
+    border: none;
+    border-top: 0.4px solid #6B6B6B; /* Colors.primaryText - same as header */
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    flex-shrink: 0;
+  }
+
+  /* Mobile keyboard positioning */
+  @media (max-width: 768px) {
+    .validate-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+
+    }
+    
+    .validate-content {
+      /* flex: 1; */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .virtual-keyboard {
+      margin-top: auto;
+      
+      border-top-left-radius: 24px; /* Keep bottom border radius for mobile */
+      border-top-right-radius: 24px;
+      box-shadow: 0 -4px 6px rgba(107, 107, 107, 0.3);
+      flex-shrink: 0;
+      margin-bottom: 20px;
+    }
+  }
+
+  .keyboard-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Last row with centered zero button */
+  .keyboard-row.last-row {
+    justify-content: space-between;
+    max-width: 200px; /* Limit width to center the zero button */
+    margin: 0 auto;
+  }
+
+  .keyboard-row.last-row .keyboard-key:first-child {
+    flex: 1;
+    max-width: 64px;
+  }
+
+  .keyboard-key {
+    width: 64px;
+    height: 64px;
+    border: 1px solid #6B8E23;
+    border-radius: 20px;
+    background: #FAFAFA;
+    color: #2C2C2C;
+    font-size: 26px;
+    font-weight: 700;
+    font-family: "InterVariable", sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(107, 142, 35, 0.1);
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+  }
+
+  .keyboard-key::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(107, 142, 35, 0.1) 0%, rgba(107, 142, 35, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .keyboard-key:hover {
+    background: #6B8E23;
+    color: #FAFAFA;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(107, 142, 35, 0.25);
+    border-color: #556B1F;
+  }
+
+  .keyboard-key:hover::before {
+    opacity: 1;
+  }
+
+  /* Mobile touch-friendly hover */
+  @media (hover: none) and (pointer: coarse) {
+    .keyboard-key:hover {
+      background: #FAFAFA;
+      color: #2C2C2C;
+      transform: none;
+      box-shadow: 0 4px 8px rgba(107, 142, 35, 0.1);
+      border-color: #6B8E23;
+    }
+    
+    .keyboard-key:active {
+      background: #6B8E23;
+      color: #FAFAFA;
+      transform: scale(0.95);
+    }
+  }
+
+  .keyboard-key:active {
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 4px rgba(107, 142, 35, 0.3);
+    transition: all 0.1s ease;
+    background: #556B1F;
+    color: #FAFAFA;
+  }
+
+  .clear-key,
+  .backspace-key,
+  .paste-key {
+    background: linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%);
+    border-color: #6B6B6B;
+    color: #6B6B6B;
+    box-shadow: 0 4px 8px rgba(107, 107, 107, 0.1);
+  }
+
+  .clear-key:hover,
+  .backspace-key:hover,
+  .paste-key:hover {
+    background: linear-gradient(135deg, #6B6B6B 0%, #5A5A5A 100%);
+    color: #FAFAFA;
+    border-color: #5A5A5A;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(107, 107, 107, 0.25);
+  }
+
+  /* Mobile touch-friendly hover for action keys */
+  @media (hover: none) and (pointer: coarse) {
+    .clear-key:hover,
+    .backspace-key:hover,
+    .paste-key:hover {
+      background: linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 100%);
+      color: #6B6B6B;
+      transform: none;
+      box-shadow: 0 4px 8px rgba(107, 107, 107, 0.1);
+    }
+    
+    .paste-key:hover {
+      background: transparent;
+      color: #556B1F;
+      border: none;
+      box-shadow: none;
+    }
+  }
+
+  .clear-key:active,
+  .backspace-key:active,
+  .paste-key:active {
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 4px rgba(107, 107, 107, 0.3);
+    background: #5A5A5A;
+    color: #FAFAFA;
+  }
+
+  /* Paste key specific styling - text-like appearance */
+  .paste-key {
+    background: transparent;
+    border: none;
+    color: #6B8E23;
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    min-height: auto;
+    line-height: 1;
+  }
+
+  .paste-key:hover {
+    background: transparent;
+    color: #556B1F;
+    border: none;
+    transform: none;
+    box-shadow: none;
+    text-decoration: none;
+  }
+
+  .paste-key:active {
+    background: transparent;
+    color: #556B1F;
+    transform: none;
+  }
+
+  /* Full width clear button */
+  .full-width {
+    width: 100%;
+    max-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+  }
+
+  .full-width span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* Full width paste button - text-like */
+  .full-width-paste {
+    width: auto;
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+    min-width: auto;
+    height: auto;
+    min-height: auto;
+    line-height: 1;
+  }
+
+  .full-width-paste span {
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .clear-key svg,
+  .backspace-key svg,
+  .paste-key svg {
+    font-size: 22px;
+    transition: transform 0.2s ease;
+  }
+
+  .full-width-paste svg {
+    font-size: 16px;
+  }
+
+  .clear-key:hover svg,
+  .backspace-key:hover svg,
+  .paste-key:hover svg {
+    transform: scale(1.1);
+  }
+
+  /* Enhanced slide-up animation for the keyboard */
+  .virtual-keyboard {
+    animation: slideUpFromBottom 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: bottom;
+  }
+
+  @keyframes slideUpFromBottom {
+    0% {
+      opacity: 0;
+      transform: translateY(100%) scale(0.8);
+    }
+    50% {
+      opacity: 0.7;
+      transform: translateY(20%) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Staggered animation for keyboard rows */
+  .keyboard-row {
+    animation: slideUpRow 0.4s ease-out;
+    animation-fill-mode: both;
+  }
+
+  .keyboard-row:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .keyboard-row:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .keyboard-row:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .keyboard-row:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .keyboard-row:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  @keyframes slideUpRow {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive keyboard */
+  @media (max-width: 320px) {
+    .virtual-keyboard {
+      padding: 12px;
+      gap: 8px;
+      margin: 0 0 10px 0;
+    }
+
+    .keyboard-row {
+      gap: 8px;
+    }
+
+    .keyboard-key {
+      width: 56px;
+      height: 56px;
+      font-size: 22px;
+      border-radius: 16px;
+    }
+
+    .clear-key svg,
+    .backspace-key svg {
+      font-size: 18px;
+    }
+  }
+
+  /* Add ripple effect on key press */
+  .keyboard-key {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .keyboard-key::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease;
+    pointer-events: none;
+  }
+
+  .keyboard-key:active::after {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Add pressed state class for better control */
+  .keyboard-key.pressed {
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 4px rgba(107, 142, 35, 0.3);
+    background: #556B1F;
+    color: #FAFAFA;
+    transition: all 0.1s ease;
+  }
+
+  .clear-key.pressed,
+  .backspace-key.pressed,
+  .paste-key.pressed {
+    transform: translateY(2px) scale(0.95);
+    box-shadow: 0 2px 4px rgba(107, 107, 107, 0.3);
+    background: #5A5A5A;
+    color: #FAFAFA;
+  }
+
+  .paste-key.pressed {
+    background: transparent;
+    color: #556B1F;
+    transform: none;
+  }

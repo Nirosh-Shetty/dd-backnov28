@@ -1,0 +1,130 @@
+export const Colors = {
+    creamWalls: "#FFF8DC",
+    warmmarble: "#F8F6F0",
+    warmbeige: "#f5deb3",
+    steelLight: "#E8E8E8",
+    steelDark: "#C0C0C0",
+    appForeground: "#FAFAFA",
+    primaryText: "#2C2C2C",
+    secondaryText: "#6B6B6B",
+    warmWood: "#8B4513",
+    copperAccents: "#B87333",
+    cuminBrown: "#A0522D",
+    turmericGolden: "#E6B800",
+    greenCardamom: "#6B8E23",
+    warningOrange: "#CC4125",
+    errorRed: "#B22222",
+    burntChilli: "#D32F2F",
+    goldenHoney: "#FFB300",
+    freshHerbs: "#4CAF50",
+    cartbg: "rgba(107, 142, 35, 0.85)",
+  };
+  
+  export const FontFamily = {
+    base: "InterVariable",
+    italic: "InterVariable-Italic",
+  };
+  
+  export const Typography = {
+    displayXL: {
+      fontFamily: FontFamily.base,
+      fontSize: 32,
+      fontWeight: "800",
+      lineHeight: 36,
+      letterSpacing: -1.0,
+    },
+    displayL: {
+      fontFamily: FontFamily.base,
+      fontSize: 28,
+      fontWeight: "800",
+      lineHeight: 31,
+      letterSpacing: -0.8,
+    },
+    headingM: {
+      fontFamily: FontFamily.base,
+      fontSize: 22,
+      fontWeight: "700",
+      lineHeight: 27,
+      letterSpacing: -0.9,
+    },
+    headingS: {
+      fontFamily: FontFamily.base,
+      fontSize: 20,
+      fontWeight: "500",
+      lineHeight: 25,
+      letterSpacing: -0.8,
+    },
+    cardTitle: {
+      fontFamily: FontFamily.base,
+      fontSize: 16,
+      fontWeight: "500",
+      lineHeight: 21,
+      letterSpacing: -0.8,
+    },
+    bodyL: {
+      fontFamily: FontFamily.base,
+      fontSize: 16,
+      fontWeight: "400",
+      lineHeight: 21,
+      letterSpacing: -0.8,
+    },
+    bodyM: {
+      fontFamily: FontFamily.base,
+      fontSize: 14,
+      fontWeight: "400",
+      lineHeight: 18,
+      letterSpacing: -0.7,
+    },
+    smallText: {
+      fontFamily: FontFamily.base,
+      fontSize: 12,
+      fontWeight: "400",
+      lineHeight: 15,
+      letterSpacing: -0.6,
+    },
+    buttonLabel: {
+      fontFamily: FontFamily.base,
+      fontSize: 14,
+      fontWeight: "500",
+      lineHeight: 15,
+      letterSpacing: -0.7,
+    },
+    badgeText: {
+      fontFamily: FontFamily.base,
+      fontSize: 10,
+      fontWeight: "500",
+      lineHeight: 11,
+      letterSpacing: -0.5,
+    },
+  };
+  
+  export const TypographyItalic = {
+    bodyLItalic: {
+      fontFamily: FontFamily.italic,
+      fontSize: 16,
+      fontWeight: "400",
+      lineHeight: 21,
+      letterSpacing: -0.8,
+    },
+    bodyMItalic: {
+      fontFamily: FontFamily.italic,
+      fontSize: 14,
+      fontWeight: "400",
+      lineHeight: 18,
+      letterSpacing: -0.7,
+    },
+    smallTextItalic: {
+      fontFamily: FontFamily.italic,
+      fontSize: 12,
+      fontWeight: "400",
+      lineHeight: 15,
+      letterSpacing: -0.6,
+    },
+    headingMItalic: {
+      fontFamily: FontFamily.italic,
+      fontSize: 22,
+      fontWeight: "700",
+      lineHeight: 27,
+      letterSpacing: -0.9,
+    },
+  };

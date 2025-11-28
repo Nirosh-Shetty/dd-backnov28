@@ -1,0 +1,334 @@
+/* --- Color Palette from themes.js --- */
+:root {
+  --cream-walls: #fff8dc;
+  --warm-marble: #f8f6f0;
+  --steel-light: #e8e8e8;
+  --app-foreground: #fafafa;
+  --primary-text: #2c2c2c;
+  --secondary-text: #6b6b6b;
+  --turmeric-golden: #e6b800;
+  --green-cardamom: #6b8e23;
+  --copper-accents: #B87333;
+}
+
+/* --- Base Styles & Typography --- */
+.refer-safe-area {
+  font-family: 'Inter', sans-serif; /* Make sure to import 'Inter' font in your project */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--warm-marble);
+  color: var(--primary-text);
+  /* max-width: 50vw;
+  margin: auto; */
+  /* max-width: 40%;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh; */
+  width: 30%;
+  margin: auto;
+}
+
+.refer-scroll-view {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 160px; /* Space for the fixed footer */
+}
+
+/* Typography Classes (translated from themes.js) */
+.refer-title {
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 15px;
+  letter-spacing: -0.7px;
+  margin-bottom: 8px;
+}
+.refer-body {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.7px;
+}
+.refer-subheading {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: -0.8px;
+}
+.refer-footer-text,
+.refer-name {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: -0.6px;
+}
+.refer-footer-bold {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: -0.6px;
+}
+.refer-right-text,
+.refer-subtext {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 11px;
+  letter-spacing: -0.5px;
+  color: var(--secondary-text);
+}
+
+/* --- Header Styles --- */
+.refer-sticky-wrap {
+  background-color: var(--green-cardamom);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  padding: 16px 0 32px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.refer-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px 12px;
+  position: relative;
+}
+
+.refer-back-btn {
+  background: none;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.refer-center-wrap {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.refer-header-anim {
+  width: 60%;
+  max-width: 240px;
+  height: 150px;
+}
+
+/* --- Main Content Card --- */
+.refer-content-card {
+  width: 100%;
+  background-color: var(--app-foreground);
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-bottom: 0.4px solid var(--secondary-text);
+}
+
+.refer-instruction-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 24px;
+  gap: 16px;
+}
+
+.refer-icon-wrapper {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  background-color: var(--turmeric-golden);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.refer-icon-number {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--primary-text);
+}
+
+.refer-instruction-block {
+  flex: 1;
+}
+
+.refer-highlight {
+  font-weight: 700;
+  color: var(--green-cardamom);
+}
+
+.refer-footer {
+  margin-top: 8px;
+  padding: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  color: var(--primary-text);
+}
+.refer-footer-bold {
+  margin: 0;
+}
+.refer-footer-text {
+  margin: 0;
+}
+
+/* --- Your Referrals Section --- */
+.refer-header-title {
+  padding: 16px;
+}
+
+.refer-subheading {
+  margin: 0;
+  color: var(--primary-text);
+}
+
+/* --- Referral List Styles --- */
+.refer-list-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 0;
+  border-bottom: 0.4px dotted var(--secondary-text);
+}
+.expandable-content-inner > .refer-list-row:last-child {
+  border-bottom: none;
+}
+
+.refer-left-block {
+  flex: 1;
+  padding-right: 8px;
+}
+
+.refer-name-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.refer-name,
+.refer-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--primary-text);
+}
+
+.refer-name-highlight {
+  color: var(--green-cardamom);
+  font-weight: 700;
+}
+
+.refer-subtext {
+  margin: 2px 0 0 24px; /* Align with text */
+}
+
+.refer-right-block {
+  text-align: right;
+  flex-shrink: 0;
+}
+.refer-right-block p {
+  margin: 0;
+}
+
+/* --- Bottom Fixed Footer --- */
+.refer-bottom-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--app-foreground);
+  padding: 20px 24px 24px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border-top: 0.4px solid var(--steel-light);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 30%;
+  margin: auto;
+}
+
+.refer-code-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px dashed var(--steel-light);
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--green-cardamom);
+}
+
+.refer-label {
+  font-size: 16px;
+  color: var(--primary-text);
+  margin: 0;
+}
+.refer-code {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+.refer-copied-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.refer-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: var(--turmeric-golden);
+  color: var(--primary-text);
+  padding: 14px;
+  border-radius: 15px;
+  border: 0.4px solid var(--steel-light);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* --- NEW: Icon Image Styles --- */
+.icon-img-s {
+  width: 16px;
+  height: 16px;
+}
+.icon-img-m {
+  width: 20px;
+  height: 20px;
+}
+.icon-img-l {
+  width: 24px;
+  height: 24px;
+  height: 24px;
+}
+
+.refer-back-btn .icon-img-l {
+  width: 28px;
+  height: 28px;
+  filter: brightness(0) invert(1); /* Changes black SVG to white */
+}
+
+
+@media screen and (max-width: 799px) {
+  .refer-safe-area {
+    width: 100%;
+  }
+  .refer-bottom-container{
+    width: 100%;
+  }
+}
+

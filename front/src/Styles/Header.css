@@ -1,0 +1,151 @@
+/* .logo {
+  width: 100%;
+  height: 70px;
+}
+.headers {
+  position: sticky;
+  top: 0px;
+  z-index: 999;
+  background-color: white;
+  border-bottom: 1px solid rgb(240, 234, 234);
+}
+
+.mobile-tgl {
+  display: none;
+}
+
+.cart-crd{
+  border: 1px solid lightgray;
+  background-color: white;
+  padding: 5px;
+  box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+}
+.logoo {
+  padding: 3px 8px ;
+  background-color: orangered;
+  border: 1px solid lightgray;
+  border-radius: 6px;
+}
+.login-input {
+  border-radius: 4px;
+}
+
+.passbtn {
+  background: transparent;
+  background-color: orangered;
+}
+
+.passbtn:hover {
+  cursor: pointer; 
+}
+
+.cart-bx {
+  margin-bottom: 20px;
+}
+
+.cartbox{
+  height: 550px;
+  overflow-y: scroll;
+}
+.alx {
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.navbar-header .nav-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  text-align: center;
+}
+
+.navbar-left-content {
+  display: flex;
+}
+
+.navbar-right-content {
+  display: flex;
+  padding: 5px 0;
+}
+
+.headers .nav-link {
+  margin: 0px 10px;
+  color: black;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.header-address-main {
+  text-align: left;
+}
+
+.vi_2 {
+  padding: 10px 30px;
+  border-radius: 10px;
+  width: 600px;
+  border: 1px solid lightgray;
+  outline-width: 0px;
+  background: #f2f2f2;
+}
+
+
+.vi_0 {
+  border: 2px solid lightgray;
+  outline-width: 0px;
+  padding: 6px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.vi_5 {
+  padding: 10px 30px;
+  border-radius: 10px;
+  width: 100%;
+  border: 1px solid lightgray;
+  outline-width: 0px;
+  background: #f2f2f2;
+}
+
+.checkout-block-img {
+  width: 100px;
+  height: 80px;
+}
+
+.dropdown-menu{
+  min-width: 8rem !important;
+}
+
+@media screen and (max-width: 799px) {
+  .container-fluid {
+    padding: 5px 12px;
+  }
+  .vi_2 {
+    width: 100%;
+  }
+  .checkout-block-img {
+    width: 100px;
+    height: 80px;
+  }
+
+  .location-input-container{
+    display: none !important;
+  }
+
+  .logo {
+    width: 150px;
+    height: 31px;
+}
+
+.mycrt{
+  display: none !important;
+}
+.mobile-nav{
+  align-items: end !important;
+  text-align: center;
+  margin: auto;
+  position: unset;
+  margin: 0;
+  padding: 0;
+}
+} */

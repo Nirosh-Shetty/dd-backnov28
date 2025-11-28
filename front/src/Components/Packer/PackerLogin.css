@@ -1,0 +1,161 @@
+.packer-login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f4f4f7, #e6f0fa); /* Light fallback gradient */
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .packer-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;
+    background-attachment: fixed;
+    background-color: rgba(255, 255, 255, 0.9); /* Lighter transparent overlay */
+    z-index: 1;
+  }
+  
+  .packer-login-card {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    z-index: 2;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideInUp 0.5s ease-in;
+  }
+  
+  .packer-login-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  }
+  
+  .packer-login-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .packer-login-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+    animation: fadeIn 0.5s ease-in 0.2s;
+  }
+  
+  .packer-input-icon {
+    border-radius: 8px 0 0 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .packer-input {
+    border-radius: 0 8px 8px 0;
+    padding: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid #dee2e6;
+  }
+  
+  .packer-input:focus {
+    border-color: #F81E0F;
+    box-shadow: 0 0 10px rgba(248, 30, 15, 0.3);
+  }
+  
+  .packer-login-btn {
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .packer-login-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .packer-login-btn:disabled {
+    background-color: #adb5bd;
+    cursor: not-allowed;
+  }
+  
+  .packer-change-number {
+    color: #F81E0F;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .packer-change-number:hover {
+    color: #d11205;
+    text-decoration: underline;
+  }
+  
+  .packer-spinner {
+    border: 2px solid #ffffff;
+    border-top: 2px solid #F81E0F;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  @keyframes slideInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @media (max-width: 768px) {
+    .packer-login-card {
+      max-width: 90%;
+      padding: 20px;
+    }
+  
+    .packer-login-title {
+      font-size: 1.5rem;
+    }
+  
+    .packer-login-subtitle {
+      font-size: 0.9rem;
+    }
+  
+    .packer-input, .packer-login-btn {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .packer-login-title {
+      font-size: 1.3rem;
+    }
+  
+    .packer-login-subtitle {
+      font-size: 0.85rem;
+    }
+  
+    .packer-input, .packer-login-btn {
+      font-size: 13px;
+      padding: 8px;
+    }
+  
+    .packer-change-number {
+      font-size: 13px;
+    }
+  }

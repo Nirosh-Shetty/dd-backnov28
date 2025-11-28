@@ -1,0 +1,31 @@
+/* src/WhatsAppChat.css */
+.whatsapp-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 35%;
+    z-index: 1000;
+}
+
+.whatsapp-chat img {
+    width: 60px;
+    /* Adjust size as needed */
+    height: 60px;
+    /* Adjust size as needed */
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.chatImg{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+@media screen and (max-width: 799px) {
+    .whatsapp-chat {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+}

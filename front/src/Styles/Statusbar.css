@@ -1,0 +1,241 @@
+/* Full-screen container for status view */
+.status-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* display: none; */
+}
+
+/* Status header with progress indicators */
+.status-header {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+/* Progress bars */
+.progress-bar {
+  flex-grow: 1;
+  margin: 0 5px;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  background-color: white;
+  border-radius: 2px;
+  width: 0;
+}
+
+/* Status container */
+.status-container {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%; */
+}
+
+/* Image container */
+.image-container {
+  /* width: 100%;
+  height: 500px;
+  border: 1px solid white; */
+  /* display: flex; */
+  position: relative;
+  /* Makes child elements position relative to this */
+  display: flex;
+  justify-content: center;
+  /* Centers the image horizontally */
+  align-items: center;
+  /* Centers the image vertically */
+  width: 100%;
+  /* Full width of parent */
+  height: 100%;
+  /* Adjust as needed */
+}
+
+
+.status-image {
+  object-fit: cover;
+  border-radius: 40px;
+  width: 350px !important;
+  height: 500px;
+  padding: 20px;
+  transition: none;
+  /* Remove any transitions */
+}
+
+
+.prev {
+  left: 0;
+  /* width: 100px; */
+  height: 400px;
+  color: white;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #e8e7e7; */
+  /* Align to the left */
+}
+
+.nextstatus {
+  right: 0;
+  /* width: 100px; */
+  height: 400px;
+  color: white;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* background-color: #e8e7e7; */
+  /* Align to the right */
+}
+
+
+
+
+/* Content area (icon, text, and timestamp) */
+.status-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 10px;
+  position: absolute;
+  bottom: 30px;
+  left: 20%;
+  width: 60%;
+  text-align: center;
+}
+
+.status-icon {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.status-text {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.timestamp {
+  font-size: 16px;
+  font-weight: bold;
+  color: red;
+}
+.status-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* border: 1px solid red; */
+}
+
+
+/* Mobile-friendly styles */
+
+@media screen and (max-width: 799px) {
+
+  .status-view {
+    display: block;
+  }
+
+  .status-image {
+    width: 100% !important;
+    height: 90vh;
+
+  }
+  .status-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* border: 1px soli red; */
+  }
+  
+  .status-image {
+    width: 100%;
+    max-height: 100vh !important;
+    max-height: 400px; /* Adjust height if needed */
+    object-fit: cover;
+    /* border: 1px solid blue; */
+  }
+  
+  .prev, .nextstatus {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    /* background-color: rgba(0, 0, 0, 0.5);  */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 50%; /* Circle buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .prev {
+    left: 10px; /* Adjust left distance */
+  }
+  
+  .nextstatus {
+    right: 10px; /* Adjust right distance */
+  }
+  
+
+  
+  .status-content {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    text-align: center;
+    background-color: rgba(237, 235, 235, 0.6); /* Semi-transparent background */
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
+  
+  .icon-and-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .status-icon {
+    font-size: 24px;
+  }
+  
+  .timestamp {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+}
