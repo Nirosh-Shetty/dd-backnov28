@@ -14,6 +14,9 @@ const foodTagsSchema = new Schema(
         tagColor: {
             type: String,
         },
+        tagIcon: {
+            type: String,
+        },
     },
     { timestamps: true }
 );

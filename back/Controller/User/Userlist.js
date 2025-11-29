@@ -15,6 +15,7 @@ const { default: axios } = require("axios");
 const { uploadFile2 } = require("../../Midleware/AWS");
 const HubMenuModel = require("../../Model/Admin/HubMenu");
 const AddproductModel = require("../../Model/Admin/Addproduct");
+const FoodTagsModel = require("../../Model/Admin/foodTags");
 class Customer {
   async loginWithOtp(req, res) {
     const { Mobile } = req.body;
@@ -2720,74 +2721,74 @@ async getPrimaryAddress(req, res) {
   }
 }
 async getHubMenu(req, res) {
-    try {
-      const { hubId } = req.query;
+  try {
+    const { hubId } = req.query;
 
-      if (!hubId) {
-        return res
-          .status(400)
-          .json({ error: "Missing required parameter: hubId." });
-      }
-      
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Start of today
-
-      const sevenDaysLater = new Date(today);
-      sevenDaysLater.setDate(sevenDaysLater.getDate() + 7); // Up to the end of the 7th day
-
-      // 1. Find all menu items for the next 7 days for the specific hub
-      const menuItems = await HubMenuModel.find({
-        hubId: hubId,
-        menuDate: {
-          $gte: today, // Greater than or equal to today
-          $lt: sevenDaysLater // Less than the start of the 8th day
-        },
-        isActive: true, 
-        // remainingQuantity: { $gt: 0 },
-      })
-      .sort({ menuDate: 1, hubPriority: 1 }) // Sort by date, then by priority
-      
-      // 2. Populate product details
-      .populate({
-        path: "productId",
-        model: AddproductModel,
-        select: "foodname Foodgallery foodcategory unit fooddescription foodmealtype menuCategory aggregatedPrice ", 
-      });
-
-      // 3. Re-format the data to match your Home.jsx structure, grouped by slot for easy frontend filtering
-      const formattedMenu = menuItems.map(item => ({
-          // Critical fields from Product Master
-          _id: item.productId._id,
-          foodname: item.productId.foodname,
-          unit: item.productId.unit,
-          fooddescription: item.productId.fooddescription,
-          foodcategory: item.productId.foodcategory,
-          foodType: item.productId.foodmealtype,
-          Foodgallery: [
-             { image2: item.productId.Foodgallery?.[0]?.image2 || "" }
-          ],
-          menuCategory: item.productId.menuCategory,
-          aggregatedPrice: item.productId.aggregatedPrice,
-          
-          // Critical fields for slot identification and pricing
-          deliveryDate: item.menuDate.toISOString(), // Store the date here
-          session: item.session, // Store the session here
-          
-          locationPrice: [{ 
-             foodprice: item.hubPrice,
-             basePrice: item.basePrice,
-             Remainingstock: item.remainingQuantity,
-             Priority: item.hubPriority,
-          }]
-      }));
-      // NOTE: We return a single, large array. The frontend will filter this.
-      console.log("formattedMenu", formattedMenu[0].locationPrice);
-      return res.status(200).json({ menu: formattedMenu });
-    } catch (error) {
-      console.error("Error fetching hub menu:", error);
-      return res.status(500).json({ error: "Internal server error" });
+    if (!hubId) {
+      return res
+        .status(400)
+        .json({ error: "Missing required parameter: hubId." });
     }
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); 
+
+    const sevenDaysLater = new Date(today);
+    sevenDaysLater.setDate(sevenDaysLater.getDate() + 7); 
+
+    const menuItems = await HubMenuModel.find({
+      hubId: hubId,
+      menuDate: {
+        $gte: today, 
+        $lt: sevenDaysLater 
+      },
+      isActive: true, 
+    })
+    .sort({ menuDate: 1, hubPriority: 1 }) 
+    
+    .populate({
+      path: "productId",
+      model: AddproductModel,
+      select: "foodname Foodgallery foodcategory unit fooddescription foodmealtype menuCategory aggregatedPrice foodTags",
+      populate: {
+        path: "foodTags",    
+        model: FoodTagsModel,  
+        select: "tagName description tagColor tagIcon", 
+      }
+    });
+
+    const formattedMenu = menuItems.map(item => ({
+        _id: item.productId._id,
+        foodname: item.productId.foodname,
+        unit: item.productId.unit,
+        fooddescription: item.productId.fooddescription,
+        foodcategory: item.productId.foodcategory,
+        foodType: item.productId.foodmealtype,
+        Foodgallery: [
+           { image2: item.productId.Foodgallery?.[0]?.image2 || "" }
+        ],
+        menuCategory: item.productId.menuCategory,
+        aggregatedPrice: item.productId.aggregatedPrice,
+        foodTags: item.productId.foodTags, 
+        deliveryDate: item.menuDate.toISOString(), 
+        session: item.session, 
+        
+        locationPrice: [{ 
+            foodprice: item.hubPrice,
+            basePrice: item.basePrice,
+            Remainingstock: item.remainingQuantity,
+            Priority: item.hubPriority,
+        }]
+    }));
+
+    // console.log("formattedMenu", formattedMenu[0].foodTags); // Debug log
+    return res.status(200).json({ menu: formattedMenu });
+
+  } catch (error) {
+    console.error("Error fetching hub menu:", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
+}
 }
 
 async function generateUniqueReferralCode() {

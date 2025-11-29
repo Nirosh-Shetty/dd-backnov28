@@ -1,4 +1,4 @@
-const customerCartModel = require("../../Model/Admin/Addorder");
+const customerOrderModel = require("../../Model/Admin/Addorder");
 const ProductModel = require("../../Model/Admin/Addproduct");
 const CouponModel = require("../../Model/Admin/Coupon");
 const UserModel = require("../../Model/User/Userlist");
@@ -89,7 +89,7 @@ async function sendordSuccessfull(oderid, mobile) {
 async function saveOrderCount(order) {
   try {
     if (order) {
-      const allOrder = await customerCartModel
+      const allOrder = await customerOrderModel
         .find({ customerId: order.customerId })
         .count();
       order.totalOrder = allOrder || 0;
@@ -145,7 +145,7 @@ async function updateStockLegacy(products) {
   }
 }
 class customerCart {
- async addfoodorder(req, res) {
+  async addfoodorder(req, res) {
     try {
       if (req.body.orderGroups && Array.isArray(req.body.orderGroups)) {
         const {
@@ -194,7 +194,7 @@ class customerCart {
             hubName,
           };
 
-          const newOrder = new customerCartModel(newOrderData);
+          const newOrder = new customerOrderModel(newOrderData);
           const savedOrder = await newOrder.save();
           savedOrderDetails.push(savedOrder);
 
@@ -223,7 +223,7 @@ class customerCart {
               `Referral check triggered for order ${savedOrderDetails[0]._id}`
             );
             // We only pass the FIRST order for the check
-            await handleReferralRewards(savedOrderDetails[0]); 
+            await handleReferralRewards(savedOrderDetails[0]);
           } catch (referralError) {
             console.error(
               `Error processing referral for order ${savedOrderDetails[0]._id}:`,
@@ -231,7 +231,7 @@ class customerCart {
             );
           }
         }
-        
+
         // ++ 4. CLEAR THE USER'S CART (FROM OLD LOGIC) ++
         if (mainCustomerId) {
           await CartModel.deleteMany({ userId: mainCustomerId });
@@ -240,12 +240,16 @@ class customerCart {
         // ++ 5. UPDATE WALLET BALANCE (FROM OLD LOGIC) ++
         if (discountWallet > 0 && mainCustomerId) {
           try {
-            const wallet = await WalletModel.findOne({ userId: mainCustomerId });
+            const wallet = await WalletModel.findOne({
+              userId: mainCustomerId,
+            });
             if (wallet) {
               wallet.transactions.push({
                 amount: discountWallet,
                 type: "debit",
-                description: `Applied to orders: ${savedOrderDetails.map(o => o.orderid).join(', ')}`,
+                description: `Applied to orders: ${savedOrderDetails
+                  .map((o) => o.orderid)
+                  .join(", ")}`,
                 isFreeCash: false,
                 expiryDate: null,
               });
@@ -287,12 +291,11 @@ class customerCart {
           message: `${orderGroups.length} orders created successfully.`,
           data: savedOrderDetails,
         });
-
       } else {
         // Fallback for old order structure (if needed)
-        return res.status(400).json({ 
-          success: false, 
-          message: "Invalid order format. 'orderGroups' array is required." 
+        return res.status(400).json({
+          success: false,
+          message: "Invalid order format. 'orderGroups' array is required.",
         });
       }
     } catch (error) {
@@ -348,7 +351,7 @@ class customerCart {
 
   //   // console.log("deli",deliveryMethod)
 
-  //   let check = await customerCartModel.findOne({
+  //   let check = await customerOrderModel.findOne({
   //     Mobilenumber: Mobilenumber,
   //     orderid: orderid,
   //     slot: slot,
@@ -357,7 +360,7 @@ class customerCart {
   //     return res.status(200).json({ error: "Your order already exits" });
 
   //   try {
-  //     let newOrder = new customerCartModel({
+  //     let newOrder = new customerOrderModel({
   //       customerId,
   //       allProduct,
   //       Placedon,
@@ -572,7 +575,7 @@ class customerCart {
       const { customerId } = req.params.id;
 
       // Find all orders for the given customerId
-      const orders = await customerCartModel
+      const orders = await customerOrderModel
         .find({ customerId })
         .populate("foodItemId");
 
@@ -597,7 +600,7 @@ class customerCart {
       const { orderId } = req.params;
 
       // Find the order by orderId
-      const order = await customerCartModel
+      const order = await customerOrderModel
         .findOne({ orderId })
         .populate("allProduct.foodItemId");
 
@@ -613,7 +616,30 @@ class customerCart {
       res.status(500).json({ message: "Failed to retrieve order", error });
     }
   }
+  async getOrderById(req, res) {
+    try {
+      const { orderId } = req.params;
+      if (!orderId) {
+        return res
+          .status(400)
+          .json({ success: false, message: "orderId is required" });
+      }
 
+      const order = await customerOrderModel.findById(orderId);
+      if (!order) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Order not found" });
+      }
+
+      return res.status(200).json({ success: true, data: order });
+    } catch (err) {
+      console.error("getOrderById error:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Server Error", error: err.message });
+    }
+  }
   async getorderNotRatedByUserID(req, res) {
     try {
       const { customerId } = req.params;
@@ -629,7 +655,7 @@ class customerCart {
       lastWeek.setDate(lastWeek.getDate() - 7);
 
       // Find order delivered in last week and not rated
-      const order = await customerCartModel
+      const order = await customerOrderModel
         .findOne({
           customerId: customerId,
           ratted: false,
@@ -658,7 +684,7 @@ class customerCart {
   //     let { id, rate, comment } = req.body;
 
   //     if (!id) return res.status(400).json({ error: "Order id is required" });
-  //     let data = await customerCartModel.findById(id);
+  //     let data = await customerOrderModel.findById(id);
   //     if (!data) return res.status(400).json({ error: "Order not found" });
   //     data.rate = rate;
   //     data.ratted = true;
@@ -694,7 +720,7 @@ class customerCart {
       //     .status(400)
       //     .json({ error: "A rating between 1 and 5 is required" });
       // }
-      const order = await customerCartModel.findById(orderId);
+      const order = await customerOrderModel.findById(orderId);
       if (!order) {
         return res.status(404).json({ error: "Order not found" });
       }
@@ -726,7 +752,7 @@ class customerCart {
     }
   }
   async getallorders(req, res) {
-    let order = await customerCartModel
+    let order = await customerOrderModel
       .find({})
       .populate("allProduct.foodItemId");
     if (order) {
@@ -797,7 +823,7 @@ class customerCart {
         },
       ];
 
-      const orders = await customerCartModel.aggregate(pipeline);
+      const orders = await customerOrderModel.aggregate(pipeline);
 
       return res.status(200).json({
         order: orders,
@@ -1052,7 +1078,7 @@ class customerCart {
         },
       ];
 
-      const salesData = await customerCartModel.aggregate(pipeline);
+      const salesData = await customerOrderModel.aggregate(pipeline);
 
       // Calculate summary
       const summary = {
@@ -1093,7 +1119,7 @@ class customerCart {
   }
   async getAllAppartmentOrder(req, res) {
     try {
-      const apartment = await customerCartModel
+      const apartment = await customerOrderModel
         .find({ orderdelivarytype: "apartment" })
         .populate("allProduct.foodItemId");
       return res.status(200).json({ orders: apartment });
@@ -1104,10 +1130,10 @@ class customerCart {
 
   async getAllOrderCount(req, res) {
     try {
-      const order = await customerCartModel
+      const order = await customerOrderModel
         .find({ orderdelivarytype: "apartment" })
         .count();
-      const corporate = await customerCartModel
+      const corporate = await customerOrderModel
         .find({ orderdelivarytype: "corporate" })
         .count();
       const user = await UserModel.find().count();
@@ -1208,11 +1234,11 @@ class customerCart {
       const skip = (pageNumber - 1) * pageSize;
 
       // Get total count for pagination
-      const totalCount = await customerCartModel.countDocuments(filter);
+      const totalCount = await customerOrderModel.countDocuments(filter);
       const totalPages = Math.ceil(totalCount / pageSize);
 
       // Fetch orders with pagination and populate
-      const orders = await customerCartModel
+      const orders = await customerOrderModel
         .find(filter)
         .populate("allProduct.foodItemId")
         .sort({ createdAt: -1 }) // Sort by newest first
@@ -1233,16 +1259,16 @@ class customerCart {
       };
 
       // Get unique slots for today
-      const uniqueSlots = await customerCartModel.distinct("slot", todayFilter);
+      const uniqueSlots = await customerOrderModel.distinct("slot", todayFilter);
 
       // Get unique locations for today
-      const uniqueLocations = await customerCartModel.distinct(
+      const uniqueLocations = await customerOrderModel.distinct(
         "delivarylocation",
         todayFilter
       );
 
       // Get unique hubs
-      const uniqueHubs = await customerCartModel.distinct("hub", {
+      const uniqueHubs = await customerOrderModel.distinct("hub", {
         orderdelivarytype: orderType,
       });
 
@@ -1355,11 +1381,11 @@ class customerCart {
       const skip = (pageNumber - 1) * pageSize;
 
       // 4. Get total count for pagination
-      const totalCount = await customerCartModel.countDocuments(filter);
+      const totalCount = await customerOrderModel.countDocuments(filter);
       const totalPages = Math.ceil(totalCount / pageSize);
 
       // 5. Fetch orders
-      // const orders = await customerCartModel
+      // const orders = await customerOrderModel
       //   .find(filter)
       //   .populate("customerId", "Firstname Lastname")
       //   .populate("hubId", "hubName") // Populating hub name
@@ -1369,7 +1395,7 @@ class customerCart {
       //   .limit(pageSize);
 
       //TODO: Use aggregation to sort orders with deliveryDate first, then by updatedAt. can revert back to above if issues arise. After some time we can revert back to above one to get the orders.
-      const orders = await customerCartModel
+      const orders = await customerOrderModel
         .aggregate([
           { $match: filter },
           // Optional: populate replacements (you can re-populate later if needed)
@@ -1398,7 +1424,7 @@ class customerCart {
         ])
         .then(async (orders) => {
           // Optional: re-populate fields
-          return await customerCartModel.populate(orders, [
+          return await customerOrderModel.populate(orders, [
             { path: "customerId", select: "Firstname Lastname" },
             { path: "hubId", select: "hubName" },
             { path: "allProduct.foodItemId" },
@@ -1406,8 +1432,8 @@ class customerCart {
         });
 
       // 6. Get unique values for filters (from your old controller)
-      const uniqueSlots = await customerCartModel.distinct("slot", filter);
-      const uniqueLocations = await customerCartModel.distinct(
+      const uniqueSlots = await customerOrderModel.distinct("slot", filter);
+      const uniqueLocations = await customerOrderModel.distinct(
         "delivarylocation",
         filter
       );
@@ -1511,7 +1537,7 @@ class customerCart {
       // console.log("Filter applied:", filter);
 
       // Use lean() for better performance and limit memory usage
-      const orders = await customerCartModel
+      const orders = await customerOrderModel
         .find(filter)
         .populate("allProduct.foodItemId")
         .sort({ createdAt: -1 })
@@ -1673,7 +1699,7 @@ class customerCart {
 
   async getallordersbyUserId(req, res) {
     let id = req.params.id;
-    let order = await customerCartModel
+    let order = await customerOrderModel
       .find({ customerId: id })
       .sort({ _id: -1 })
       .populate("allProduct.foodItemId");
@@ -1689,7 +1715,7 @@ class customerCart {
     let orderid = req.params.id;
 
     try {
-      const data = await customerCartModel.findOneAndDelete({ _id: orderid });
+      const data = await customerOrderModel.findOneAndDelete({ _id: orderid });
 
       if (!data) {
         return res.status(403).json({
@@ -1759,7 +1785,7 @@ class customerCart {
       }
 
       // Find orders matching the criteria
-      const orders = await customerCartModel.find(query);
+      const orders = await customerOrderModel.find(query);
 
       if (orders.length === 0) {
         return res.status(404).json({
@@ -1779,7 +1805,7 @@ class customerCart {
         updateData.orderstatus = "Delivered";
       }
 
-      const updateResult = await customerCartModel.updateMany(
+      const updateResult = await customerOrderModel.updateMany(
         query,
         updateData
       );
@@ -1844,7 +1870,7 @@ class customerCart {
       }
 
       // Find the order by ID
-      const order = await customerCartModel.findById(id);
+      const order = await customerOrderModel.findById(id);
       if (!order) {
         return res.status(404).json({ message: "Order not found" });
       }
@@ -1884,7 +1910,7 @@ class customerCart {
     try {
       const { companyId } = req.params;
 
-      const orders = await customerCartModel
+      const orders = await customerOrderModel
         .find({ companyId: companyId })
         .populate("customerId")
         .populate("allProduct.foodItemId")
@@ -1921,7 +1947,7 @@ class customerCart {
   //       status: { $in: ["Pending", "Partially Packed", "Packed", "Cooking", "Packing"] },
   //     };
 
-  //     const orders = await customerCartModel
+  //     const orders = await customerOrderModel
   //       .find(query)
   //       .populate("allProduct.foodItemId")
   //       .sort({ createdAt: -1 });
@@ -1953,7 +1979,7 @@ class customerCart {
         deliveryDate: { $gte: startOfDay, $lte: endOfDay },
       };
 
-      const orders = await customerCartModel
+      const orders = await customerOrderModel
         .find(query)
         .populate("allProduct.foodItemId");
       // .sort({ createdAt: -1 });
@@ -2193,7 +2219,7 @@ class customerCart {
         },
       ];
 
-      const individualPackingItems = await customerCartModel.aggregate(
+      const individualPackingItems = await customerOrderModel.aggregate(
         aggregationPipeline
       );
 
@@ -2455,7 +2481,7 @@ class customerCart {
       } = req.body;
 
       // Find the order
-      let order = await customerCartModel
+      let order = await customerOrderModel
         .findById(_id)
         .populate("allProduct.foodItemId");
       if (!order) {
@@ -2568,7 +2594,7 @@ async function handleReferralRewards(order) {
     );
 
     const referrer = await CustomerModel.findById(friend.referral.referredBy);
-    
+
     // Use findOneAndUpdate to ensure settings exist
     const settings = await ReferralSettings.findOneAndUpdate(
       {},
@@ -2595,31 +2621,37 @@ async function handleReferralRewards(order) {
             type: "credit",
             description: `Referral reward for ${friend.Fname || friend.Mobile}`,
           });
-          await referrerWallet.save(); 
+          await referrerWallet.save();
           console.log(
             `Credited ₹${referrerReward} to referrer wallet ${referrer._id}`
           );
-          
+
           referrer.referralEarnings =
             (referrer.referralEarnings || 0) + referrerReward;
           settings.totalReferrerPayout =
             (settings.totalReferrerPayout || 0) + referrerReward;
         } else {
-            // ++ Create wallet if it doesn't exist ++
-            await WalletModel.create({
-                userId: referrer._id,
-                balance: referrerReward,
-                transactions: [{
-                    amount: referrerReward,
-                    type: "credit",
-                    description: `Referral reward for ${friend.Fname || friend.Mobile}`,
-                }]
-            });
-            console.log(
-              `Created wallet and credited ₹${referrerReward} to referrer ${referrer._id}`
-            );
-            referrer.referralEarnings = (referrer.referralEarnings || 0) + referrerReward;
-            settings.totalReferrerPayout = (settings.totalReferrerPayout || 0) + referrerReward;
+          // ++ Create wallet if it doesn't exist ++
+          await WalletModel.create({
+            userId: referrer._id,
+            balance: referrerReward,
+            transactions: [
+              {
+                amount: referrerReward,
+                type: "credit",
+                description: `Referral reward for ${
+                  friend.Fname || friend.Mobile
+                }`,
+              },
+            ],
+          });
+          console.log(
+            `Created wallet and credited ₹${referrerReward} to referrer ${referrer._id}`
+          );
+          referrer.referralEarnings =
+            (referrer.referralEarnings || 0) + referrerReward;
+          settings.totalReferrerPayout =
+            (settings.totalReferrerPayout || 0) + referrerReward;
         }
       }
     } else {
@@ -2635,7 +2667,7 @@ async function handleReferralRewards(order) {
     await friend.save();
     if (referrer && referrerReward > 0) await referrer.save();
     if (referrerReward > 0) await settings.save();
-    
+
     console.log(`Referral status for user ${friend._id} updated to 'success'.`);
     if (referrer && referrerReward > 0) {
       await sendReferralSuccessNotification(

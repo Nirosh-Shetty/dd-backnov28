@@ -41,7 +41,7 @@ const customerorderSchema = new mongoose.Schema(
         name: {
           type: String,
         },
-         category: {
+        category: {
           type: String,
         },
         unit: {
@@ -118,26 +118,26 @@ const customerorderSchema = new mongoose.Schema(
     delivarylocation: {
       type: String,
     },
-  coordinates: {
-  type: {
-    type: String,
-    enum: ['Point'],
-    // required: true
-  },
-  coordinates: {
-    type: [Number],
-    required: true
-  }
-},
+    coordinates: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        // required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+      },
+    },
 
-    addressType:{
-      type:String
+    addressType: {
+      type: String,
     },
-    hubName:{
-      type:String
+    hubName: {
+      type: String,
     },
-    hubId:{
-      type:String 
+    hubId: {
+      type: String,
     },
     username: {
       type: String,
@@ -251,9 +251,9 @@ const customerorderSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-         studentName: { type: String },
-  studentClass: { type: String },
-  studentSection: { type: String },
+    studentName: { type: String },
+    studentClass: { type: String },
+    studentSection: { type: String },
   },
   { timestamps: true }
 );

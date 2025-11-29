@@ -1,38 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const CartController = require("../../Controller/Admin/Addorder");
+const OrderController = require("../../Controller/Admin/Addorder");
 
-router.post("/addfoodorder", CartController.addfoodorder);
-router.get("/getfoodorder/:id", CartController.getfoodorder);
-router.get("/getfoodorderId/:id", CartController.getfoodorderId);
-router.get("/getallordersbyUserId/:id", CartController.getallordersbyUserId);
-router.get("/getallorders", CartController.getallorders);
-router.get("/getallordersfilterold", CartController.getallordersfilterOld);
-router.get("/getallordersfilter", CartController.getallordersfilter);
-router.put("/updateOrderStatus/:id", CartController.updateOrderStatus);
-router.delete("/deletefoodorder/:id", CartController.deletefoodorder);
+router.post("/addfoodorder", OrderController.addfoodorder);
+router.get("/getfoodorder/:id", OrderController.getfoodorder);
+router.get("/getfoodorderId/:id", OrderController.getfoodorderId);
+router.get("/getallordersbyUserId/:id", OrderController.getallordersbyUserId);
+router.get("/getallorders", OrderController.getallorders);
+router.get("/getallordersfilterold", OrderController.getallordersfilterOld);
+router.get("/getallordersfilter", OrderController.getallordersfilter);
+router.put("/updateOrderStatus/:id", OrderController.updateOrderStatus);
+router.delete("/deletefoodorder/:id", OrderController.deletefoodorder);
 router.get("/getorderNotRatedByUserID/:customerId",
-  CartController.getorderNotRatedByUserID);
-// router.put("/makeRateOfOrder",CartController.makeRateOfOrder);
-router.put("/submitOrderRating", CartController.submitOrderRating);
+  OrderController.getorderNotRatedByUserID);
+// router.put("/makeRateOfOrder",OrderController.makeRateOfOrder);
+router.put("/submitOrderRating", OrderController.submitOrderRating);
 router.get(
   "/getAllOrdersByCompanyId/:companyId",
-  CartController.getAllOrderByCompany
+  OrderController.getAllOrderByCompany
 );
-router.get("/getPackerOrders", CartController.getPackerOrders);
-router.get('/getPackerOrders2',CartController.getPackerOrders2);
+router.get("/getPackerOrders", OrderController.getPackerOrders);
+router.get('/getPackerOrders2',OrderController.getPackerOrders2);
 
-router.put("/updatePackerOrder", CartController.updatePackerOrder);
-router.get("/getDrivers", CartController.getDrivers);
+router.put("/updatePackerOrder", OrderController.updatePackerOrder);
+router.get("/getDrivers", OrderController.getDrivers);
 router.put(
   "/updateMultipleOrderStatus",
-  CartController.updateMultipleOrderStatus
+  OrderController.updateMultipleOrderStatus
 );
-router.get("/exportExcelOrder", CartController.exportExcelOrder);
-router.get("/getAllOrderCount", CartController.getAllOrderCount);
-router.get("/getAllAppartmentOrder", CartController.getAllAppartmentOrder);
+router.get("/exportExcelOrder", OrderController.exportExcelOrder);
+router.get("/getAllOrderCount", OrderController.getAllOrderCount);
+router.get("/getAllAppartmentOrder", OrderController.getAllAppartmentOrder);
 
-router.get("/getallorderssales", CartController.getallorderssales);
-router.get("/getSalesReport", CartController.getSalesReport);
+router.get("/getallorderssales", OrderController.getallorderssales);
+router.get("/getSalesReport", OrderController.getSalesReport);
+router.get("/getOrderByOrderId/:orderId", OrderController.getOrderById);
 
 module.exports = router;

@@ -50,7 +50,19 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
     localStorage.getItem("currentLocation") ??
       localStorage.getItem("primaryAddress")
   );
+  // console.log('dfgdgdfgdf',address)
+  const isSameDay = (d1, d2) => {
+    const a = new Date(d1);
+    const b = new Date(d2);
+    a.setHours(0, 0, 0, 0);
+    b.setHours(0, 0, 0, 0);
+    return a.getTime() === b.getTime();
+  };
 
+  const isFutureDate = (deliveryDate) => {
+    const today = new Date();
+    return !isSameDay(deliveryDate, today) && new Date(deliveryDate) > today;
+  };
   const getNormalizedToday = () => {
     const today = new Date();
     return new Date(
@@ -840,10 +852,10 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
     setloader(true);
     try {
       const addressDetails = {
-        addressline: `${address.apartmentname}, ${address.Address}`,
+        addressline: `${address.fullAddress}`,
         addressType: addresstype,
         coordinates: address.location?.coordinates || [0, 0],
-
+        hubId: address.hubId || "",
         // Student info (if available)
         studentName: address.studentName || "",
         studentClass: address.studentClass || "",
@@ -858,6 +870,8 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
         "http://localhost:7013/api/user/plan/add-to-plan",
         {
           userId: user._id,
+          mobile: user.Mobile,
+          username: user.Fname,
           items: Carts,
           addressDetails: addressDetails,
         }
@@ -1530,6 +1544,7 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
                 {/* We change 'fooditemdata' to 'menuItems' */}
                 {/* We also remove the .filter() and .sort() because our dummy data is already prepared */}
                 {menuItems?.map((item, i) => {
+                  const isPreOrder = isFutureDate(item.deliveryDate);
                   let matchedLocation = item.locationPrice?.[0];
                   const checkOf = AllOffer?.find(
                     (ele) => ele?.foodItemId == item?._id?.toString()
@@ -1573,6 +1588,21 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
                               />
                             </div>
                           </div>
+                          {item?.foodTags && (
+                            <div className="food-tag-container">
+                              {item.foodTags.map((tag) => (
+                                <div
+                                  className="food-tag-pill"
+                                  style={{
+                                    backgroundColor: tag.tagColor,
+                                  }}
+                                >
+                                  {tag.tagName}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
                           <div className="food-name-container">
                             <p className="food-name">{item?.foodname}</p>
                             <small className="food-unit">{item?.unit}</small>
@@ -1629,9 +1659,23 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
                                       "rgba(255, 179, 0, 0.25)",
                                   }}
                                 >
-                                  {checkOf && <BiSolidOffer color="green" />}{" "}
-                                  {matchedLocation?.Remainingstock || 0}{" "}
-                                  servings Left
+                                  {isPreOrder && (
+                                    <div
+                                      className="guaranteed-label"
+                                      style={{
+                                        fontSize: 11,
+                                        color: "#6B8E23",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      {" "}
+                                      Guaranteed Availability{" "}
+                                    </div>
+                                  )}
+                                  {checkOf && <BiSolidOffer color="green" />}
+                                  {!isPreOrder &&
+                                    `${matchedLocation?.Remainingstock || 0}
+                                  servings Left`}
                                 </span>
                               </div>
                             </div>
@@ -1671,10 +1715,22 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
                                     opacity: user && !address ? 0.5 : 1,
                                   }}
                                 >
-                                  <span className="add-to-cart-btn-text">
-                                    {" "}
-                                    Add{" "}
-                                  </span>
+                                  {isPreOrder ? (
+                                    <span className="add-to-cart-btn-text">
+                                      Pick
+                                      <br /> {`for ${
+    new Date(item.deliveryDate).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short'
+    })
+  }`}
+                                    </span>
+                                  ) : (
+                                    <span className="add-to-cart-btn-text">
+                                      Add
+                                    </span>
+                                  )}
+
                                   <span className="add-to-cart-btn-icon">
                                     {" "}
                                     <FaPlus />
@@ -1790,7 +1846,7 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
         </div>
 
         <MultiCartDrawer
-        proceedToPlan={proceedToPlan}
+          proceedToPlan={proceedToPlan}
           groupedCarts={groupedCarts}
           overallSubtotal={overallSubtotal}
           overallTotalItems={overallTotalItems}
@@ -1997,6 +2053,9 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
                   // Get the stock count to display
                   const stockCount = matchedLocation?.Remainingstock || 0;
 
+                  // Calculate isPreOrder based on foodData delivery date
+                  const isPreOrderDrawer = isFutureDate(foodData.deliveryDate);
+
                   return (
                     <>
                       <div className="pricing-section">
@@ -2023,7 +2082,10 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
                                   style={{ marginRight: "5px" }}
                                 />
                               )}{" "}
-                              {stockCount} servings left!
+                                  {!isPreOrderDrawer &&
+                                  `${stockCount} servings left!`
+                                  }
+                              
                             </>
                           ) : (
                             "Sold Out"

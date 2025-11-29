@@ -1,11 +1,14 @@
 const MyPlanModel = require("../../Model/User/MyPlan");
 const CartModel = require("../../Model/User/Cart");
+const OrderModel = require("../../Model/Admin/Addorder");
+const WalletModel = require("../../Model/User/Wallet");
+const CouponModel = require("../../Model/Admin/Coupon");
 const moment = require("moment");
 
 class MyPlanController {
   async addToPlan(req, res) {
     try {
-      const { userId, items, addressDetails } = req.body;
+      const { userId, mobile, username, items, addressDetails } = req.body;
 
       if (!userId || !items || items.length === 0) {
         return res.status(400).json({ error: "Invalid data" });
@@ -19,7 +22,7 @@ class MyPlanController {
             deliveryDate: item.deliveryDate,
             session: item.session,
             // Hub ID comes from the item (assuming locationInfo is attached in frontend)
-            hubId: item.locationInfo?.hubId || "UNKNOWN",
+            hubId: addressDetails?.hubId || "UNKNOWN",
             products: [],
           };
         }
@@ -61,10 +64,10 @@ class MyPlanController {
         const formattedProducts = group.products.map((p) => {
           const qty = Number(p.Quantity);
 
-          // Logic: If Reserved, use preOrderPrice (if available), else hubPrice
-          // Note: The frontend should ideally send these specific prices.
-          // For now, we map what we have.
-          const finalPrice = Number(p.price); // This comes from frontend cart state
+          // const finalPrice = Number(p.price); 
+          const finalPrice = type === "Reserved"
+            ? Number(p.preOrderPrice || p.hubPrice || p.basePrice || 0)
+            : Number(p.hubPrice || p.basePrice || 0);
           const pTotal = finalPrice * qty;
 
           slotTotalAmount += pTotal;
@@ -74,13 +77,10 @@ class MyPlanController {
             foodName: p.foodname,
             foodImage: p.image,
             foodCategory: p.foodcategory,
-
-            // Mapping the 3 price types (Ensure frontend sends these if they exist)
             basePrice: p.basePrice || 0,
-            hubPrice: p.actualPrice || 0, // usually actualPrice in cart is hubPrice
-            preOrderPrice: p.offerPrice || 0, // assuming offerPrice maps to pre-order
-
-            price: finalPrice,
+            hubPrice: p.hubPrice || 0, 
+            preOrderPrice: p.preOrderPrice || 0, 
+            // price: finalPrice,
             quantity: qty,
             totalPrice: pTotal,
           };
@@ -109,6 +109,8 @@ class MyPlanController {
           updateOne: {
             filter: {
               userId: userId,
+              mobileNumber: mobile,
+              username: username,
               deliveryDate: group.deliveryDate,
               session: group.session,
             },
@@ -186,60 +188,70 @@ class MyPlanController {
    * 3. Update Quantity of a specific product in a Plan
    * Used for editing quantity directly in the "My Plan" page.
    */
-  async updatePlanProduct(req, res) {
-    try {
-      const { planId, foodItemId, quantity } = req.body;
+async updatePlanProduct(req, res) {
+  try {
+    const { planId, foodItemId, quantity } = req.body;
 
-      const plan = await MyPlanModel.findById(planId);
-      if (!plan) return res.status(404).json({ error: "Plan not found" });
+    const plan = await MyPlanModel.findById(planId);
+    if (!plan) return res.status(404).json({ error: "Plan not found" });
 
-      // Check if editing is allowed (Cutoff time)
-      if (new Date() > new Date(plan.paymentDeadline)) {
-        return res
-          .status(400)
-          .json({ error: "Cutoff time passed. Cannot edit." });
-      }
-
-      // Find product index
-      const prodIndex = plan.products.findIndex(
-        (p) => p.foodItemId.toString() === foodItemId
-      );
-
-      if (prodIndex === -1) {
-        return res.status(404).json({ error: "Product not found in plan" });
-      }
-
-      if (quantity <= 0) {
-        // Remove item if quantity 0
-        plan.products.splice(prodIndex, 1);
-      } else {
-        // Update quantity and price
-        plan.products[prodIndex].quantity = quantity;
-        plan.products[prodIndex].totalPrice =
-          plan.products[prodIndex].price * quantity;
-      }
-
-      // Recalculate Slot Total
-      plan.slotTotalAmount = plan.products.reduce(
-        (sum, item) => sum + item.totalPrice,
-        0
-      );
-
-      // If plan is empty, delete the plan document entirely
-      if (plan.products.length === 0) {
-        await MyPlanModel.findByIdAndDelete(planId);
-        return res
-          .status(200)
-          .json({ success: true, message: "Plan removed as it is empty" });
-      }
-
-      await plan.save();
-      return res.status(200).json({ success: true, data: plan });
-    } catch (error) {
-      console.error("Error updating plan item:", error);
-      return res.status(500).json({ error: "Server Error" });
+    // Do NOT allow edits if status is not pending
+    if (plan.status !== "Pending Payment") {
+      return res
+        .status(400)
+        .json({ error: "Cannot edit this plan. It is not in Pending Payment state." });
     }
+
+    // Check cutoff
+    if (new Date() > new Date(plan.paymentDeadline)) {
+      return res
+        .status(400)
+        .json({ error: "Cutoff time passed. Cannot edit." });
+    }
+
+    const prodIndex = plan.products.findIndex(
+      (p) => p.foodItemId.toString() === foodItemId
+    );
+
+    if (prodIndex === -1) {
+      return res.status(404).json({ error: "Product not found in plan" });
+    }
+
+    const prod = plan.products[prodIndex];
+    const unitPrice =
+      prod.preOrderPrice && prod.preOrderPrice > 0
+        ? prod.preOrderPrice
+        : prod.hubPrice && prod.hubPrice > 0
+        ? prod.hubPrice
+        : prod.basePrice || 0;
+
+    if (quantity <= 0) {
+      plan.products.splice(prodIndex, 1);
+    } else {
+      prod.quantity = quantity;
+      prod.totalPrice = unitPrice * quantity;
+    }
+
+    plan.slotTotalAmount = plan.products.reduce(
+      (sum, item) => sum + (item.totalPrice || 0),
+      0
+    );
+
+    if (plan.products.length === 0) {
+      await MyPlanModel.findByIdAndDelete(planId);
+      return res
+        .status(200)
+        .json({ success: true, message: "Plan removed as it is empty" });
+    }
+
+    await plan.save();
+    return res.status(200).json({ success: true, data: plan });
+  } catch (error) {
+    console.error("Error updating plan item:", error);
+    return res.status(500).json({ error: "Server Error" });
   }
+}
+
 
   /**
    * 4. Get Specific Plans for Checkout
@@ -310,7 +322,7 @@ class MyPlanController {
 
         // 3. Update Linked Order Status (if exists)
         if (plan.orderId) {
-            await AddorderModel.findByIdAndUpdate(plan.orderId, { status: "Cancelled" });
+            await OrderModel.findByIdAndUpdate(plan.orderId, { status: "Cancelled" });
         }
 
         // 4. Update Plan Status
@@ -364,7 +376,7 @@ class MyPlanController {
           
           // If there is a linked Order, update that too
           if (plan.orderId) {
-              await AddorderModel.findByIdAndUpdate(plan.orderId, {
+              await OrderModel.findByIdAndUpdate(plan.orderId, {
                   delivarylocation: addressDetails.addressline,
                   // Update other address fields in AddOrder if they exist there
               });
@@ -377,6 +389,158 @@ class MyPlanController {
           console.error("Error updating address:", error);
           return res.status(500).json({ error: "Server Error" });
       }
+  }
+  async createOrderFromSinglePlan(req, res) {
+    try {
+      const {
+        userId,
+        planId,
+        discountWallet = 0,
+        coupon = 0,
+        couponId = null,
+        companyId,
+        companyName,
+        customerType,
+        studentName,
+        studentClass,
+        studentSection,
+        addressType,
+        coordinates,
+        hubName,
+        username,
+        mobile,
+        deliveryNotes="",
+      } = req.body;
+
+      if (!userId || !planId) {
+        return res
+          .status(400)
+          .json({ success: false, message: "userId and planId are required" });
+      }
+
+      const plan = await MyPlanModel.findOne({
+        _id: planId,
+        userId,
+        status: "Pending Payment",
+      });
+
+      if (!plan) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Plan not found or not payable" });
+      }
+
+      // Build order from plan
+      const allProduct = (plan.products || []).map((p) => ({
+        foodItemId: p.foodItemId,
+        totalPrice: p.totalPrice,
+        quantity: p.quantity,
+        name: p.foodName,
+        category: p.foodCategory,
+        unit: "portion",
+      }));
+
+      const newOrderData = {
+        customerId: plan.userId || userId,
+        deliveryDate: plan.deliveryDate,
+        session: plan.session,
+        hubId: plan.hubId,
+        allProduct,
+        subTotal: plan.slotTotalAmount,
+        foodtotal: plan.slotTotalAmount,
+        delivarylocation: plan.delivarylocation,
+        coordinates: plan.coordinates,
+        addressType: plan.addressType,
+        studentName: plan.studentName || studentName,
+        studentClass: plan.studentClass || studentClass,
+        studentSection: plan.studentSection || studentSection,
+        hubName,
+        username: plan.username || "No Name",
+        Mobilenumber: plan.mobile || null,
+        paymentmethod: "Online",
+        ordertype: plan.orderType, // "Instant" | "Reserved"
+        // orderdelivarytype: "slot",
+        slot: plan.session,
+        orderstatus: "Cooking",
+        status: "Cooking",
+        discountWallet,
+        coupon,
+        couponId,
+        // companyId,
+        // companyName,
+        // customerType,
+        deliveryNotes: deliveryNotes || "",
+      };
+
+      const newOrder = new OrderModel(newOrderData);
+      const savedOrder = await newOrder.save();
+
+      // update stock, whatsapp, referral if you want (same as addfoodorder)
+      // await updateStockFromHubMenu(plan.hubId, allProduct, plan.deliveryDate, plan.session);
+      // sendorderwhatsapp(savedOrder?.orderid, savedOrder.username, savedOrder.Mobilenumber, savedOrder.slot, savedOrder.delivarylocation);
+      // await handleReferralRewards(savedOrder);
+
+      // wallet update if any
+      if (discountWallet > 0 && userId) {
+        try {
+          const wallet = await WalletModel.findOne({ userId });
+          if (wallet) {
+            wallet.transactions.push({
+              amount: discountWallet,
+              type: "debit",
+              description: `Applied to order: ${savedOrder.orderid}`,
+              isFreeCash: false,
+              expiryDate: null,
+            });
+            wallet.balance -= Number(discountWallet);
+            wallet.updatedAt = Date.now();
+            await wallet.save();
+          }
+        } catch (walletError) {
+          console.error("Wallet update error:", walletError);
+        }
+      }
+
+      // coupon usage if needed
+      if (couponId && mobile) {
+        try {
+          const coupons = await CouponModel.find({
+            couponName: couponId?.toLowerCase(),
+          });
+          for (let couponDoc of coupons) {
+            let userExists = couponDoc.applyUser.find(
+              (ele) => ele?.MobileNumber === mobile
+            );
+            if (!userExists) {
+              couponDoc.applyUser.push({
+                Name: username,
+                MobileNumber: mobile,
+              });
+              await couponDoc.save();
+              break;
+            }
+          }
+        } catch (couponError) {
+          console.error("Coupon update error:", couponError);
+        }
+      }
+
+      // Link plan to order and mark Confirmed
+      plan.status = "Confirmed";
+      plan.orderId = savedOrder._id;
+      await plan.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Order created from plan successfully",
+        data: savedOrder,
+      });
+    } catch (err) {
+      console.error("createOrderFromSinglePlan error:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Server Error", error: err.message });
+    }
   }
 }
 

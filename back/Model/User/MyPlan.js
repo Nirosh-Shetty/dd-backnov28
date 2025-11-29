@@ -7,7 +7,8 @@ const myPlanSchema = new mongoose.Schema(
     deliveryDate: { type: Date, required: true },
     session: { type: String, enum: ["Lunch", "Dinner"], required: true },
     hubId: { type: String, required: true }, 
-
+    username: { type: String},
+    mobileNumber: { type: String },
     products: [
       {
         foodItemId: { type: ObjectId, ref: "addproduct" },
@@ -57,12 +58,24 @@ const myPlanSchema = new mongoose.Schema(
       },
     },
 
-    addressType: {
-      type: String,
-    },
+    // deliveryNotes: { type: String },
     studentName: { type: String },
     studentClass: { type: String },
     studentSection: { type: String },
+     //TODO: remove bellow fields later
+      addressType: {
+      type: String,
+    },
+    companyName: {
+      type: String,
+      default: "Normal User",
+    },
+    customerType: {
+      type: String,
+    },
+     companyId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
