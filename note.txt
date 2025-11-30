@@ -41,3 +41,13 @@ user adds items to the cart for multiple dates and session which is stored in th
 user clicks proceed or go to myPlan button--> all the cart data is sent to an api url ___, which adds to the myplan of the user --> during this, user is redicted to myplan page--> since we already added the myplan in the backend, we can just use useeffect to fetch the mypan data of that user and map it. -->
 now user need to pay for insatnt orders(today's order) within 10mins, and can pay the other within the cutoff time. Here the user can also have a button called view myplan to see the detailas of that plan along with option to edit the qunantiy of the item, edit the addres and if he clicks on add more redirect him to checkout page/home page(yet to decide). He can pay individually(direclty redirect him to payment gateway) or select multiple dates and sessions(take him to checkout page)(Note: we need to update the checkout page, since it was taking the data from the cart, but from now we need to take the data from the myplan either by sending the array of myplan id
 to the checkout page or doing something with localStorage, SO THE CHECKOUT PAGE DEPENDS ON THE MYPLAN RATHER THAN CART)(Also user edit and add items here also, so no such ui changes in CHECKOUT page). --> USER goes to pay ( either for single on or for multiple) where we give the array of plan id's in the config(if need other details also)--> payment done --> goes to addfoodorder api --> updates the myplan status and also the adds new orders for which the payemtn is done
+
+
+
+complications
+
+in add more
+user clicks add more then he redirected to home page, now 
+
+in location change
+when user chnages the location which belongs to another hub , where the hub menu diffrerent and now the item already in teh plan is not in that hubMenu
