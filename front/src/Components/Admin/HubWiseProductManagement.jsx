@@ -574,7 +574,6 @@ const HubWiseProductManagement = () => {
                       </Button>
                       <Link
                         to="/admin/menu-upload"
-                        target="_blank"
                         className="ms-2"
                       >
                         <Button variant="success">

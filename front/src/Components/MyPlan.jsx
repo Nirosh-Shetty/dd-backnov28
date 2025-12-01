@@ -10,11 +10,11 @@ import myplancalender from "./../assets/myplancalender.png";
 import IsNonVeg from "./../assets/isVeg=no.svg";
 import IsVeg from "./../assets/isVeg=yes.svg";
 import myplancancelicon from "./../assets/myplancancelicon.png";
-import myplandrop from "./../assets/myplandrop.png";
+// import myplandrop from "./../assets/myplandrop.png";
 import myplanseparator from "./../assets/myplanseparator.png";
 import myplanskip from "./../assets/myplanskip.png";
 import myplancancel2 from "./../assets/myplancancelicon.png";
-import myplanblackedit from "./../assets/myplanblackedit.png";
+// import myplanblackedit from "./../assets/myplanblackedit.png";
 
 import "../Styles/MyPlan.css";
 
@@ -41,6 +41,7 @@ const ViewPlanModal = ({
   handlePayPlan,
   handleTrackOrder,
 }) => {
+  const navigate = useNavigate();
   const [localPlan, setLocalPlan] = useState(plan);
   console.log("Viewing plan:", plan);
 
@@ -90,6 +91,34 @@ const ViewPlanModal = ({
       alert(e.response?.data?.error || "Failed to update quantity");
     }
   }
+  // Find this function in MyPlan.jsx
+  const handleAddMore = () => {
+    // We need to find the plan to get its address details
+    // Since this function is called inside the modal (ViewPlanModal), 'localPlan' or 'plan' is available
+
+    // If this is inside ViewPlanModal component:
+    const targetAddress = {
+      // We reconstruct the address object structure your Home/LocationModal expects
+      addressType: localPlan.addressType,
+      fullAddress: localPlan.delivarylocation,
+      hubId: localPlan.hubId,
+      location: { coordinates: localPlan.coordinates?.coordinates },
+      // Add any other fields your Home.jsx needs to "setAddress" correctly
+      studentInformation: {
+        studentName: localPlan.studentName,
+        studentClass: localPlan.studentClass,
+        studentSection: localPlan.studentSection,
+      },
+    };
+
+    navigate("/home", {
+      state: {
+        targetDate: localPlan.deliveryDate,
+        targetSession: localPlan.session,
+        overrideAddress: targetAddress, // <--- PASSING THE ADDRESS
+      },
+    });
+  };
   const [isBillingOpen, setIsBillingOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -140,74 +169,69 @@ const ViewPlanModal = ({
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="plan-modal-overlay" onClick={onClose}>
+      <div className="close-button-container">
+        <button onClick={onClose} className="close-modal-btn">
+          <img src={myplancancel2} alt="" style={{ width: 24 }} />
+        </button>
+      </div>
+
+      <div className="view-plan-top">
+        <div className="view-plan-time">
+          {formatDate(localPlan.deliveryDate)}{" "}
+          {formatDay(localPlan.deliveryDate)}
+        </div>
+        <div className="reminder-banner">
+          {localPlan.status === "Pending Payment" && isBeforeDeadline && (
+            <>
+              Confirm plan within {days} days, {hours} hours
+            </>
+          )}
+        </div>
+      </div>
       <div
-        className="modal-content"
+        className="plan-modal-content"
         onClick={(e) => {
           e.stopPropagation();
         }}
+        style={
+          localPlan.status === "Pending Payment" && isBeforeDeadline
+            ? {
+                borderTopRightRadius: 0,
+              }
+            : {}
+        }
       >
         {/* Header */}
         <div className="modal-header-section">
-          <div className="date-box">
-            <div className="date-box-row">
-              <span>{formatDate(plan.deliveryDate)}</span>
-              <div
-                className="tab-divider"
-                style={{ top: 12, background: "#ccc" }}
-              />
-              <span>{formatDay(plan.deliveryDate)}</span>
-            </div>
-            <div className="tab-line" />
-            <div
-              className="tab-label"
-              style={{ fontSize: 14, fontWeight: 700, marginTop: 6 }}
-            >
-              {localPlan.session}
+          <div className="plan-header">
+            <div className="plan-session-info">
+              <h3 className="session-title">{localPlan.session}</h3>
+              <div className="delivery-time-text">
+                {/* static for now; optionally store slot time in DB later */}
+                Arrives fresh between 12:00 to 01:00PM
+              </div>
             </div>
             {localPlan.status === "Confirmed" && (
-              <div className="paid-badge-corner">
-                <img
-                  src={name}
-                  alt="badge"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
+              <div className="status-badge-confirmed">✓ Confirmed</div>
+            )}
+            {localPlan.status === "Skipped" && (
+              <div className="status-badge-skipped">Skipped</div>
+            )}
+            {localPlan.status === "Cancelled" && (
+              <div className="status-badge-canceled">Cancelled</div>
+            )}
+            {localPlan.status === "Pending Payment" && (
+              <div className="status-badge-pending">Pending</div>
             )}
           </div>
-
-          <div
-            className={`timer-banner ${
-              plan.status === "Confirmed" ? "paid" : "unpaid"
-            }`}
-          >
-            {localPlan.status === "Pending Payment" && isBeforeDeadline && (
-              <>
-                Confirm plan within {days} days, {hours} hours
-              </>
-            )}
-            {localPlan.status === "Confirmed" && isBeforeDeadline && (
-              <>
-                You can cancel this order for next {days} days, {hours} hours
-              </>
-            )}
-            {localPlan.status === "Confirmed" && !isBeforeDeadline && (
-              <>Order sent to kitchen</>
-            )}
-            {localPlan.status === "Skipped" && <>Plan skipped</>}
-            {localPlan.status === "Cancelled" && <>Order cancelled</>}
-          </div>
-
-          <button onClick={onClose} className="close-modal-btn">
-            <img src={myplancancel2} alt="" style={{ width: 24 }} />
-          </button>
         </div>
 
         {/* Products list */}
         <div className="checkoutcontainer">
           <div className="cart-container">
-            <div className="cart-section">
-              <div className="cart-content">
+            <div className="plans-item-section">
+              <div className="plans-item-content">
                 {/* Header row */}
                 <div className="cart-header">
                   <div className="header-content">
@@ -324,7 +348,12 @@ const ViewPlanModal = ({
                       <div className="add-more-content">
                         <div className="add-more-text-container">
                           {/* you can wire this to "add more items for this slot" */}
-                          <span className="add-more-label">Add More</span>
+                          <span
+                            className="add-more-label"
+                            onClick={handleAddMore}
+                          >
+                            Add More
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -354,147 +383,152 @@ const ViewPlanModal = ({
 
             {/* Delivery Details */}
 
-           <div className="delivery-details-container">
-  {/* --- Address Row --- */}
-  <div className="delivery-details-row">
-    {/* Icon */}
-    <div className="delivery-icon-wrapper">
-      <img
-        style={{
-          filter:
-            "invert(40%) sepia(88%) saturate(390%) hue-rotate(36deg) brightness(94%) contrast(89%)",
-        }}
-        // You might need to import this image or check if the path is correct
-        src="/Assets/selectlocation.svg" 
-        alt="Location"
-        className="delivery-icon"
-      />
-    </div>
+            <div className="delivery-details-container">
+              {/* --- Address Row --- */}
+              <div className="delivery-details-row">
+                {/* Icon */}
+                <div className="delivery-icon-wrapper">
+                  <img
+                    style={{
+                      filter:
+                        "invert(40%) sepia(88%) saturate(390%) hue-rotate(36deg) brightness(94%) contrast(89%)",
+                    }}
+                    // You might need to import this image or check if the path is correct
+                    src="/Assets/selectlocation.svg"
+                    alt="Location"
+                    className="delivery-icon"
+                  />
+                </div>
 
-    {/* Content */}
-    <div className="delivery-content-wrapper">
-      {/* 1. Location Name (e.g. Work, Home, School Name) */}
-      <p
-        className="select-location-text fw-semibold text-truncate mb-0"
-        style={{ maxWidth: "220px", color: "black" }}
-        title={
-          localPlan?.addressType === "Home"
-            ? localPlan?.homeName || "Home"
-            : localPlan?.addressType === "PG"
-            ? localPlan?.apartmentName || "PG"
-            : localPlan?.addressType === "School"
-            ? localPlan?.schoolName || "School"
-            : (localPlan?.addressType === "Work" || localPlan?.addressType === "corporate")
-            ? localPlan?.companyName
-            : localPlan?.addressType || "Delivery Location"
-        }
-      >
-        {localPlan?.addressType === "Home"
-          ? localPlan?.homeName || "Home"
-          : localPlan?.addressType === "PG"
-          ? localPlan?.apartmentName || "PG"
-          : localPlan?.addressType === "School"
-          ? localPlan?.schoolName || "School"
-          : (localPlan?.addressType === "Work" || localPlan?.addressType === "corporate")
-          ? localPlan?.companyName
-          : localPlan?.addressType || "Delivery Location"}
-      </p>
+                {/* Content */}
+                <div className="delivery-content-wrapper">
+                  {/* 1. Location Name (e.g. Work, Home, School Name) */}
+                  <p
+                    className="select-location-text fw-semibold text-truncate mb-0"
+                    style={{ maxWidth: "220px", color: "black" }}
+                    title={
+                      localPlan?.addressType === "Home"
+                        ? localPlan?.homeName || "Home"
+                        : localPlan?.addressType === "PG"
+                        ? localPlan?.apartmentName || "PG"
+                        : localPlan?.addressType === "School"
+                        ? localPlan?.schoolName || "School"
+                        : localPlan?.addressType === "Work" ||
+                          localPlan?.addressType === "corporate"
+                        ? localPlan?.companyName
+                        : localPlan?.addressType || "Delivery Location"
+                    }
+                  >
+                    {localPlan?.addressType === "Home"
+                      ? localPlan?.homeName || "Home"
+                      : localPlan?.addressType === "PG"
+                      ? localPlan?.apartmentName || "PG"
+                      : localPlan?.addressType === "School"
+                      ? localPlan?.schoolName || "School"
+                      : localPlan?.addressType === "Work" ||
+                        localPlan?.addressType === "corporate"
+                      ? localPlan?.companyName
+                      : localPlan?.addressType || "Delivery Location"}
+                  </p>
 
-      {/* 2. Full Address */}
-      <p
-        className="small text-truncate mb-0"
-        style={{
-          maxWidth: "280px",
-          color: "black", 
-        }}
-        title={localPlan?.delivarylocation}
-      >
-        {localPlan?.delivarylocation || ""}
-      </p>
+                  {/* 2. Full Address */}
+                  <p
+                    className="small text-truncate mb-0"
+                    style={{
+                      maxWidth: "280px",
+                      color: "black",
+                    }}
+                    title={localPlan?.delivarylocation}
+                  >
+                    {localPlan?.delivarylocation || ""}
+                  </p>
 
-      {/* 3. User Name & Mobile */}
-      <div className="caption-section" data-text-role="Caption">
-        <div className="user-detailss mt-1">
-          {localPlan?.username} | {localPlan?.mobileNumber}
-        </div>
-      </div>
+                  {/* 3. User Name & Mobile */}
+                  <div className="caption-section" data-text-role="Caption">
+                    <div className="user-detailss mt-1">
+                      {localPlan?.username} | {localPlan?.mobileNumber}
+                    </div>
+                  </div>
 
-      {/* 4. Student Details (Only shows if School or student data exists) */}
-      {(localPlan?.addressType === "School" || localPlan?.studentName) && (
-        <div className="caption-section" data-text-role="Caption">
-          <div className="user-detailss mt-1">
-            {localPlan?.studentName} 
-            {localPlan?.studentClass ? ` | Class - ${localPlan.studentClass}` : ""}
-            {localPlan?.studentSection ? ` | Section - ${localPlan.studentSection}` : ""}
-          </div>
-        </div>
-      )}
-    </div>
+                  {/* 4. Student Details (Only shows if School or student data exists) */}
+                  {(localPlan?.addressType === "School" ||
+                    localPlan?.studentName) && (
+                    <div className="caption-section" data-text-role="Caption">
+                      <div className="user-detailss mt-1">
+                        {localPlan?.studentName}
+                        {localPlan?.studentClass
+                          ? ` | Class - ${localPlan.studentClass}`
+                          : ""}
+                        {localPlan?.studentSection
+                          ? ` | Section - ${localPlan.studentSection}`
+                          : ""}
+                      </div>
+                    </div>
+                  )}
+                </div>
 
-    {/* Change Button */}
-    <div className="change-button">
-      <div className="change-icon">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-        >
-          <path
-            d="M12.7869 4.06006C13.0026 4.06408 13.197 4.13649 13.3679 4.27393L13.4402 4.3374L13.4421 4.33936L14.0691 4.96729H14.0701C14.2584 5.15512 14.3562 5.37816 14.3562 5.63135C14.3561 5.88443 14.2583 6.10722 14.0701 6.29541L8.06909 12.2964L8.12964 12.356L7.97827 12.3872L7.92847 12.437L7.89526 12.4038L6.14429 12.7642L6.14331 12.7632C5.99732 12.7977 5.86495 12.7583 5.75757 12.6509C5.6507 12.5438 5.61079 12.4117 5.64526 12.2661L6.00366 10.5142L5.97144 10.4819L6.02124 10.4312L6.05249 10.2798L6.11304 10.3394L12.1277 4.33936C12.3159 4.15164 12.537 4.05551 12.7869 4.06006ZM3.90894 4.93896C4.82094 5.04553 5.51534 5.25975 5.98022 5.59033L6.14624 5.72217C6.50712 6.04333 6.68917 6.46017 6.68921 6.96631C6.68921 7.46798 6.48149 7.87559 6.07202 8.18018C5.66644 8.48179 5.09567 8.65629 4.37183 8.71533L4.3728 8.71631C3.56599 8.78862 2.97488 8.95356 2.58765 9.20166C2.20735 9.44537 2.02278 9.7739 2.02319 10.1958L2.03003 10.3452C2.06267 10.6821 2.20957 10.9385 2.46753 11.1235C2.76926 11.3398 3.255 11.4829 3.93921 11.5415L4.03296 11.5493L4.03101 11.6431L4.01538 12.3101L4.01245 12.4146L3.90894 12.4077C3.02682 12.3515 2.34286 12.14 1.86987 11.7622C1.39341 11.3812 1.15698 10.8553 1.15698 10.1958C1.15698 9.53364 1.4429 8.99511 2.00562 8.5874C2.56435 8.18297 3.33478 7.93994 4.3064 7.8501C4.8365 7.80039 5.22055 7.69624 5.46948 7.54639C5.71114 7.40131 5.823 7.21012 5.823 6.96631C5.82295 6.63775 5.67929 6.38651 5.37964 6.20361C5.07099 6.01541 4.55566 5.87468 3.82104 5.7915L3.72241 5.78076L3.73218 5.68213L3.79761 5.02881L3.80835 4.92725L3.90894 4.93896ZM12.7771 4.99463C12.7176 4.99466 12.671 5.01448 12.6306 5.05518H12.6296L7.20581 10.4771L7.9314 11.2026L13.3542 5.78076C13.3953 5.73967 13.4148 5.69221 13.4148 5.6333C13.4148 5.58902 13.4041 5.55139 13.3816 5.51807L13.3552 5.48584L12.9236 5.05518C12.883 5.01429 12.8361 4.99463 12.7771 4.99463Z"
-            fill="#6B6B6B"
-            stroke="#6B6B6B"
-            strokeWidth="0.2"
-          />
-        </svg>
-      </div>
-      <div className="change-badge" data-text-role="Badge/Chip">
-        <div className="change-text">
-          <span
-            // If you don't have setShowLocationModal, change this to: onClick={() => {}}
-            onClick={() => {}} 
-            style={{ cursor: "pointer" }}
-          >
-            Change
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+                {/* Change Button */}
+                <div className="change-button">
+                  <div className="change-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                    >
+                      <path
+                        d="M12.7869 4.06006C13.0026 4.06408 13.197 4.13649 13.3679 4.27393L13.4402 4.3374L13.4421 4.33936L14.0691 4.96729H14.0701C14.2584 5.15512 14.3562 5.37816 14.3562 5.63135C14.3561 5.88443 14.2583 6.10722 14.0701 6.29541L8.06909 12.2964L8.12964 12.356L7.97827 12.3872L7.92847 12.437L7.89526 12.4038L6.14429 12.7642L6.14331 12.7632C5.99732 12.7977 5.86495 12.7583 5.75757 12.6509C5.6507 12.5438 5.61079 12.4117 5.64526 12.2661L6.00366 10.5142L5.97144 10.4819L6.02124 10.4312L6.05249 10.2798L6.11304 10.3394L12.1277 4.33936C12.3159 4.15164 12.537 4.05551 12.7869 4.06006ZM3.90894 4.93896C4.82094 5.04553 5.51534 5.25975 5.98022 5.59033L6.14624 5.72217C6.50712 6.04333 6.68917 6.46017 6.68921 6.96631C6.68921 7.46798 6.48149 7.87559 6.07202 8.18018C5.66644 8.48179 5.09567 8.65629 4.37183 8.71533L4.3728 8.71631C3.56599 8.78862 2.97488 8.95356 2.58765 9.20166C2.20735 9.44537 2.02278 9.7739 2.02319 10.1958L2.03003 10.3452C2.06267 10.6821 2.20957 10.9385 2.46753 11.1235C2.76926 11.3398 3.255 11.4829 3.93921 11.5415L4.03296 11.5493L4.03101 11.6431L4.01538 12.3101L4.01245 12.4146L3.90894 12.4077C3.02682 12.3515 2.34286 12.14 1.86987 11.7622C1.39341 11.3812 1.15698 10.8553 1.15698 10.1958C1.15698 9.53364 1.4429 8.99511 2.00562 8.5874C2.56435 8.18297 3.33478 7.93994 4.3064 7.8501C4.8365 7.80039 5.22055 7.69624 5.46948 7.54639C5.71114 7.40131 5.823 7.21012 5.823 6.96631C5.82295 6.63775 5.67929 6.38651 5.37964 6.20361C5.07099 6.01541 4.55566 5.87468 3.82104 5.7915L3.72241 5.78076L3.73218 5.68213L3.79761 5.02881L3.80835 4.92725L3.90894 4.93896ZM12.7771 4.99463C12.7176 4.99466 12.671 5.01448 12.6306 5.05518H12.6296L7.20581 10.4771L7.9314 11.2026L13.3542 5.78076C13.3953 5.73967 13.4148 5.69221 13.4148 5.6333C13.4148 5.58902 13.4041 5.55139 13.3816 5.51807L13.3552 5.48584L12.9236 5.05518C12.883 5.01429 12.8361 4.99463 12.7771 4.99463Z"
+                        fill="#6B6B6B"
+                        stroke="#6B6B6B"
+                        strokeWidth="0.2"
+                      />
+                    </svg>
+                  </div>
+                  <div className="change-badge" data-text-role="Badge/Chip">
+                    <div className="change-text">
+                      <span
+                        // If you don't have setShowLocationModal, change this to: onClick={() => {}}
+                        onClick={() => {}}
+                        style={{ cursor: "pointer" }}
+                      >
+                        Change
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                <img src={myplanseparator} alt="" className="separator-line" />
+              <img src={myplanseparator} alt="" className="separator-line"
+               />
 
+              {/* --- Handover/Notes Row --- */}
+              <div className="delivery-details-row">
+                {/* Icon */}
+                <div className="delivery-icon-wrapper">
+                  <img
+                    style={{
+                      scale: "1.5",
+                    }}
+                    src="/Assets/securityIcon.svg"
+                    alt="Handover"
+                    className="delivery-icon"
+                  />
+                </div>
 
-  {/* --- Handover/Notes Row --- */}
-  <div className="delivery-details-row">
-    {/* Icon */}
-    <div className="delivery-icon-wrapper">
-      <img
-        style={{
-          scale: "1.5",
-        }}
-        src="/Assets/securityIcon.svg"
-        alt="Handover"
-        className="delivery-icon"
-      />
-    </div>
-
-    {/* Content */}
-    <div className="delivery-content-wrapper">
-      <input
-        type="text"
-        className="delivery-notes-input"
-        placeholder="Enter any notes for delivery"
-        // Mapped to your existing state logic from the old code
-        value={deliveryNotes}
-        onChange={(e) => setDeliveryNotes(e.target.value)}
-      />
-    </div>
-  </div>
-</div>
-
-
+                {/* Content */}
+                <div className="delivery-content-wrapper">
+                  <input
+                    type="text"
+                    className="delivery-notes-input"
+                    placeholder="Enter any notes for delivery"
+                    // Mapped to your existing state logic from the old code
+                    value={deliveryNotes}
+                    onChange={(e) => setDeliveryNotes(e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -514,7 +548,11 @@ const ViewPlanModal = ({
                 />
               </button>
               <button
-                className="confirm-pay-btn"
+                // className="confirm-pay-btn"
+                className="pay-btn"
+                style={{
+                  width: "58%",
+                }}
                 onClick={() => handlePayPlan(localPlan, deliveryNotes)}
                 disabled={loading}
               >
@@ -542,10 +580,18 @@ const ViewPlanModal = ({
           )}
           {isPaidLocked && (
             <button
-              className="confirm-pay-btn"
+              className="track-order-btn"
               onClick={() => handleTrackOrder(plan)}
             >
-              Track Order
+              <span> Track Order</span>
+
+              <img
+                style={{
+                  scale: "0.8",
+                }}
+                src="/Assets/tracker.svg"
+                alt=""
+              />
             </button>
           )}
         </div>
@@ -815,25 +861,27 @@ const MyPlan = () => {
             const display = getTabDateDisplay(tab);
             const label = tab.charAt(0).toUpperCase() + tab.slice(1);
             return (
-              <button
+              <div
                 key={tab}
                 onClick={() => setSelectedTab(tab)}
                 className={`tab-btn ${isActive ? "active" : ""}`}
               >
-                <div className="tab-btn-content">
+                {/* <div className="tab-btn-content">
                   <span>{display.date}</span>
                   <div className="tab-divider" />
                   <span>{display.day}</span>
                 </div>
-                <div className="tab-line" />
-                <div className="tab-label">{label}</div>
-              </button>
+                <div className="tab-line" /> */}
+                <h1 className={`tab-label ${isActive ? "active" : ""}`}>
+                  {label}
+                </h1>
+              </div>
             );
           })}
         </div>
 
         {/* Cards */}
-        <div className="orders-list">
+        <div className="plans-list">
           {currentTabOrders.length === 0 ? (
             <div className="no-plans-text">No plans for this day yet</div>
           ) : (
@@ -845,100 +893,146 @@ const MyPlan = () => {
 
               const isUnpaidEditable =
                 plan.status === "Pending Payment" && isBeforeDeadline;
-              
-                const isPaidEditable =
+
+              const isPaidEditable =
                 plan.status === "Confirmed" && isBeforeDeadline;
               const isPaidLocked =
-                plan.status === "Confirmed" && !isBeforeDeadline; 
-              
-              {/* const isConfirmed = plan.status === "Confirmed"; */}
+                plan.status === "Confirmed" && !isBeforeDeadline;
+
+              {
+                /* const isConfirmed = plan.status === "Confirmed"; */
+              }
 
               return (
-                <div key={plan._id} className="order-card">
-                  <div className="order-header">
-                    <h3 className="session-title">{plan.session}</h3>
-                    {plan.status === "Confirmed" && (
-                      <div className="status-badge-confirmed">✓ Confirmed</div>
-                    )}
-                    {plan.status === "Skipped" && (
-                      <div className="status-badge-confirmed">Skipped</div>
-                    )}
-                    {plan.status === "Cancelled" && (
-                      <div className="status-badge-confirmed">Cancelled</div>
-                    )}
-                  </div>
-
-                  <div className="delivery-time-text">
-                    {/* static for now; optionally store slot time in DB later */}
-                    Arrives fresh between 12:00 to 01:00PM
-                  </div>
-
-                  <div className="location-row">
-                    <img
-                      src={myplanlocation}
-                      alt=""
-                      style={{ width: 16, height: 16 }}
-                    />
-                    <div className="location-text">{plan.delivarylocation}</div>
-                  </div>
-
-                  {/* reminder for unpaid before cutoff */}
+                <>
                   {isUnpaidEditable && (
                     <div className="reminder-banner">
-                      Confirm plan within ({days}) days, ({hours}) hours
+                      Confirm plan within {days} days, {hours} hours
                     </div>
                   )}
+                  <div
+                    key={plan._id}
+                    className="plan-card"
+                    style={
+                      isUnpaidEditable
+                        ? {
+                            borderTopRightRadius: 0,
+                          }
+                        : {}
+                    }
+                  >
+                    {/* reminder for unpaid before cutoff */}
 
-                  <div className="card-actions">
-                    <button
-                      onClick={() => handleViewPlan(plan)}
-                      className="btn-base btn-secondary"
-                    >
-                      View Plan
-                      <img src={myplancalender} alt="" style={{ width: 18 }} />
-                    </button>
+                    <div className="plan-header">
+                      <div className="plan-session-info">
+                        <h3 className="session-title">{plan.session}</h3>
+                        <div className="delivery-time-text">
+                          {/* static for now; optionally store slot time in DB later */}
+                          Arrives fresh between 12:00 to 01:00PM
+                        </div>
+                      </div>
+                      {plan.status === "Confirmed" && (
+                        <div className="status-badge-confirmed">
+                          ✓ Confirmed
+                        </div>
+                      )}
+                      {plan.status === "Skipped" && (
+                        <div className="status-badge-skipped">Skipped</div>
+                      )}
+                      {plan.status === "Cancelled" && (
+                        <div className="status-badge-canceled">Cancelled</div>
+                      )}
+                    </div>
 
-                    {isUnpaidEditable && (
-                      <button
-                        className="btn-base btn-primary"
-                        onClick={() => handlePayPlan(plan)}
-                      >
-                        Pay
-                        <span className="price-pill">
-                          ₹{plan.slotTotalAmount?.toFixed(2)}
-                        </span>
-                      </button>
-                    )}
+                    <div className="location-row">
+                      <img
+                        src={myplanlocation}
+                        alt=""
+                        style={{ width: 16, height: 16 }}
+                      />
+                      <div className="location-text">
+                        <h1 className="addressLine1">
+                          {plan?.addressType === "Home"
+                            ? plan?.homeName || "Home"
+                            : plan?.addressType === "PG"
+                            ? plan?.apartmentName || "PG"
+                            : plan?.addressType === "School"
+                            ? plan?.schoolName || "School"
+                            : plan?.addressType === "Company"
+                            ? plan?.companyName || "Company"
+                            : "Unknown"}
+                        </h1>
+                        <p className="addressLine2 text-truncate">
+                          {plan.delivarylocation}
+                        </p>
+                      </div>
+                    </div>
 
-                    {isPaidEditable && (
-                      <button
-                        className="btn-base btn-primary"
-                        onClick={async () => {
-                          await axios.post(
-                            "http://localhost:7013/api/user/plan/skip-cancel",
-                            {
-                              planId: plan._id,
-                              userId,
-                            }
-                          );
-                          fetchPlans();
-                        }}
-                      >
-                        Cancel
-                      </button>
-                    )}
-      {/* TODO: attention here */}
-                    {/* {isPaidLocked && ( */}
-                    {true && (
-                      <button
-                        className="btn-base btn-primary"
-                        onClick={() => handleTrackOrder(plan)}
-                      >
-                        Track Order
-                      </button>
-                    )}
+                    <div className="card-actions">
+                      <div className="view-plan-btn-container">
+                        <button
+                          onClick={() => handleViewPlan(plan)}
+                          className="view-plan-btn"
+                        >
+                          <span>View Plan</span>
+
+                          <img
+                            src={myplancalender}
+                            alt=""
+                            style={{ width: 18 }}
+                          />
+                        </button>
+                      </div>
+
+                      {isUnpaidEditable && (
+                        <button
+                          className="pay-btn"
+                          onClick={() => handlePayPlan(plan)}
+                        >
+                          Pay
+                          <span className="price-pill">
+                            ₹{plan.slotTotalAmount?.toFixed(2)}
+                          </span>
+                        </button>
+                      )}
+
+                      {isPaidEditable && (
+                        <button
+                          className="btn-base btn-primary"
+                          onClick={async () => {
+                            await axios.post(
+                              "http://localhost:7013/api/user/plan/skip-cancel",
+                              {
+                                planId: plan._id,
+                                userId,
+                              }
+                            );
+                            fetchPlans();
+                          }}
+                        >
+                          Cancel
+                        </button>
+                      )}
+                      {/* {true && ( */}
+                      {isPaidLocked && (
+                        <button
+                          className="track-order-btn"
+                          onClick={() => handleTrackOrder(plan)}
+                        >
+                          <span> Track Order</span>
+
+                          <img
+                            style={{
+                              scale: "0.8",
+                            }}
+                            src="/Assets/tracker.svg"
+                            alt=""
+                          />
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </>
               );
             })
           )}
@@ -957,71 +1051,71 @@ const MyPlan = () => {
         />
       )}
 
-     <Modal
-  className="tarck-order"
-  show={trackModalVisible}
-  onHide={() => {
-    setTrackModalVisible(false);
-    setCurrentTrackedOrder(null);
-  }}
-  size="lg"
-  centered
->
-  <Modal.Header closeButton>
-    <Modal.Title>Tracking your meal</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {currentTrackedOrder &&
-      (() => {
-        const progressSteps = [
-          "Cooking",
-          "Packing",
-          "Ontheway",
-          "Delivered",
-        ];
-        const statusMap = { inprocess: "Cooking" };
-        const currentStatus =
-          statusMap[currentTrackedOrder.rawStatus] ||
-          currentTrackedOrder.rawStatus;
-        const currentStatusIndex = progressSteps.indexOf(currentStatus);
+      <Modal
+        className="tarck-order"
+        show={trackModalVisible}
+        onHide={() => {
+          setTrackModalVisible(false);
+          setCurrentTrackedOrder(null);
+        }}
+        size="lg"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Tracking your meal</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {currentTrackedOrder &&
+            (() => {
+              const progressSteps = [
+                "Cooking",
+                "Packing",
+                "Ontheway",
+                "Delivered",
+              ];
+              const statusMap = { inprocess: "Cooking" };
+              const currentStatus =
+                statusMap[currentTrackedOrder.rawStatus] ||
+                currentTrackedOrder.rawStatus;
+              const currentStatusIndex = progressSteps.indexOf(currentStatus);
 
-        // (If not found, fallback to first step)
-        const displayStatus =
-          progressSteps[currentStatusIndex] || progressSteps[0];
+              // (If not found, fallback to first step)
+              const displayStatus =
+                progressSteps[currentStatusIndex] || progressSteps[0];
 
-        const totalItems =
-          (currentTrackedOrder.items || []).reduce(
-            (acc, item) => acc + (item.quantity || 0),
-            0
-          );
+              const totalItems = (currentTrackedOrder.items || []).reduce(
+                (acc, item) => acc + (item.quantity || 0),
+                0
+              );
 
-        const getStepIconStyle = (stepIndex) => ({
-          backgroundColor:
-            currentStatusIndex >= stepIndex ? "#6B8E23" : "#FFFFFF",
-        });
-        const getIconFill = (stepIndex) =>
-          currentStatusIndex >= stepIndex ? "#FFFFFF" : "#2C2C2C";
-        const getConnectorFill = (stepIndex) =>
-          currentStatusIndex >= stepIndex ? "#6B8E23" : "#C0C0C0";
+              const getStepIconStyle = (stepIndex) => ({
+                backgroundColor:
+                  currentStatusIndex >= stepIndex ? "#6B8E23" : "#FFFFFF",
+              });
+              const getIconFill = (stepIndex) =>
+                currentStatusIndex >= stepIndex ? "#FFFFFF" : "#2C2C2C";
+              const getConnectorFill = (stepIndex) =>
+                currentStatusIndex >= stepIndex ? "#6B8E23" : "#C0C0C0";
 
-        return (
-          <div className="card" style={{ paddingTop: 10 }}>
-            <div className="trackingTopRow">
-              <div>
-                <div className="detailsorder" style={{ fontWeight: 700 }}>
-                  ORDER ID : <span>{currentTrackedOrder.orderId}</span>
-                </div>
-                <div className="detailsorder" style={{ color: "#888" }}>
-                  Summary: {totalItems} items, ₹{currentTrackedOrder.total}
-                </div>
-                <div className="detailsorder" style={{ marginTop: 5 }}>
-                  Status: <b>{displayStatus}</b>
-                </div>
-              </div>
-              {/* Help link if needed */}
-            </div>
-            {/* Progress bar as in your UI */}
-           <div className="progressRow">
+              return (
+                <div className="card" style={{ paddingTop: 10 }}>
+                  <div className="trackingTopRow">
+                    <div>
+                      <div className="detailsorder" style={{ fontWeight: 700 }}>
+                        ORDER ID : <span>{currentTrackedOrder.orderId}</span>
+                      </div>
+                      <div className="detailsorder" style={{ color: "#888" }}>
+                        Summary: {totalItems} items, ₹
+                        {currentTrackedOrder.total}
+                      </div>
+                      <div className="detailsorder" style={{ marginTop: 5 }}>
+                        Status: <b>{displayStatus}</b>
+                      </div>
+                    </div>
+                    {/* Help link if needed */}
+                  </div>
+                  {/* Progress bar as in your UI */}
+                  <div className="progressRow">
                     {/* Step 1: In the Kitchen */}
                     <div className="stepContainer">
                       <div
@@ -1168,29 +1262,28 @@ const MyPlan = () => {
                       <div className="stepLabel">At your door</div>
                     </div>
                   </div>
-            <div className="etaText" style={{ marginTop: 16 }}>
-              Your meal is scheduled for{" "}
-              <span style={{ fontWeight: "bold" }}>
-                {currentTrackedOrder.eta}
-              </span>
-            </div>
-          </div>
-        );
-      })()}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button
-      variant="secondary"
-      onClick={() => {
-        setTrackModalVisible(false);
-        setCurrentTrackedOrder(null);
-      }}
-    >
-      Close
-    </Button>
-  </Modal.Footer>
-</Modal>
-
+                  <div className="etaText" style={{ marginTop: 16 }}>
+                    Your meal is scheduled for{" "}
+                    <span style={{ fontWeight: "bold" }}>
+                      {currentTrackedOrder.eta}
+                    </span>
+                  </div>
+                </div>
+              );
+            })()}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setTrackModalVisible(false);
+              setCurrentTrackedOrder(null);
+            }}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

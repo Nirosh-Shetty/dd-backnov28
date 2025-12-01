@@ -8,9 +8,11 @@
   --turmeric-golden: #e6b800;
   --green-cardamom: #6b8e23;
   --copper-accents: #b87333;
-  --warm-beige-bg: #fdfaf5; /* Background from your screenshot */
+  --warm-beige: #F5DEB3; 
   --cuminBrown: #A0522D;
-  --steel-light:#c0c0c0;
+  --steel-dark:#c0c0c0;
+  --success-green:#6B8E23;
+  --neu-STB:#3A8DAD;
 }
 
 /* .App {

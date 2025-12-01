@@ -5,7 +5,7 @@ import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import { FaPlus, FaMinus, FaSquareWhatsapp } from "react-icons/fa6";
 import "../Styles/Home.css";
 import Banner from "./Banner";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { BsCart3 } from "react-icons/bs";
 // import { HiMiniShoppingBag } from "react-icons/hi2";
 import axios from "axios";
@@ -34,6 +34,8 @@ import DateSessionSelector from "./DateSessionSelector";
 
 const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
   const navigate = useNavigate();
+  const location = useLocation(); 
+  
   const { wallet, transactions, loading, walletSeting, getorderByCustomerId } =
     useContext(WalletContext);
 
@@ -46,10 +48,10 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
   //     addresstype === "apartment" ? "address" : "coporateaddress"
   //   )
   // );
-  const address = JSON.parse(
-    localStorage.getItem("currentLocation") ??
-      localStorage.getItem("primaryAddress")
-  );
+  // const address = JSON.parse(
+  //   localStorage.getItem("currentLocation") ??
+  //     localStorage.getItem("primaryAddress")
+  // );
   // console.log('dfgdgdfgdf',address)
   const isSameDay = (d1, d2) => {
     const a = new Date(d1);
@@ -69,8 +71,28 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
       Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
     );
   };
-  const [selectedDate, setSelectedDate] = useState(getNormalizedToday());
-  const [selectedSession, setSelectedSession] = useState("Lunch");
+ const [address, setAddress] = useState(() => {
+    // Priority 1: Address passed from "Add More"
+    if (location.state?.overrideAddress) {
+        return location.state.overrideAddress;
+    }
+    // Priority 2: localStorage
+    return JSON.parse(
+      localStorage.getItem("currentLocation") ??
+      localStorage.getItem("primaryAddress")
+    );
+});
+
+// Also update your selectedDate/Session initialization (you might have done this already)
+const [selectedDate, setSelectedDate] = useState(() => {
+    if (location.state?.targetDate) return new Date(location.state.targetDate);
+    return getNormalizedToday();
+});
+
+const [selectedSession, setSelectedSession] = useState(() => {
+    if (location.state?.targetSession) return location.state.targetSession;
+    return "Lunch";
+});
   const [allHubMenuData, setAllHubMenuData] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   // const [isMultiCartOpen, setIsMultiCartOpen] = useState(false);
@@ -860,6 +882,12 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
         studentName: address.studentName || "",
         studentClass: address.studentClass || "",
         studentSection: address.studentSection || "",
+        schoolName: address.schoolName || "",
+        houseName: address.houseName || "",
+        apartmentName: address.apartmentName || "",
+        companyName: address.companyName || "",
+        customerType: address.customerType || "",
+        companyId: address.companyId || "",
       };
       console.log("Details my plan", {
         userId: user._id,
@@ -1072,7 +1100,7 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
   //Registration modal
   const [Fname, setFname] = useState("");
   const [Mobile, setMobile] = useState("");
-  const [Address, setAddress] = useState("");
+  // const [Address, setAddress] = useState("");
   const [Flatno, setFlatno] = useState("");
   const [OTP, setOTP] = useState(["", "", "", ""]);
   const [PasswordShow, setPasswordShow] = useState(false);

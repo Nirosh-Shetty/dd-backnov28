@@ -6,23 +6,23 @@ const CouponModel = require("../../Model/Admin/Coupon");
 const moment = require("moment");
 
 class MyPlanController {
+ // ... imports remain same
   async addToPlan(req, res) {
     try {
-      const { userId, mobile, username, items, addressDetails } = req.body;
+      const { userId, items, addressDetails } = req.body;
 
       if (!userId || !items || items.length === 0) {
         return res.status(400).json({ error: "Invalid data" });
       }
 
-      // 2. Group Items by "Date|Session"
+      // 1. Group Items by "Date|Session" locally
       const groupedSlots = items.reduce((acc, item) => {
         const key = `${item.deliveryDate}|${item.session}`;
         if (!acc[key]) {
           acc[key] = {
             deliveryDate: item.deliveryDate,
             session: item.session,
-            // Hub ID comes from the item (assuming locationInfo is attached in frontend)
-            hubId: addressDetails?.hubId || "UNKNOWN",
+            hubId: item.locationInfo?.hubId || "UNKNOWN",
             products: [],
           };
         }
@@ -31,14 +31,13 @@ class MyPlanController {
       }, {});
 
       const now = new Date();
-      const bulkOps = [];
 
-      // 3. Process Each Slot
+      // 2. Process Each Group Separately
       for (const key in groupedSlots) {
         const group = groupedSlots[key];
         const deliveryDateObj = new Date(group.deliveryDate);
 
-        // --- A. Deadline & Type Logic ---
+        // A. Calculate Deadline & Type (Same logic as before)
         const isToday = moment(deliveryDateObj).isSame(now, "day");
         let deadline, type;
 
@@ -46,8 +45,7 @@ class MyPlanController {
           type = "Instant";
           deadline = moment(now).add(15, "minutes").toDate();
         } else {
-          type = "Reserved"; // Changed from "Preorder" to match your Model enum
-          // Lunch Cutoff: 11:00 AM, Dinner Cutoff: 6:00 PM
+          type = "Reserved";
           if (group.session === "Lunch") {
             deadline = moment(deliveryDateObj)
               .set({ hour: 11, minute: 0, second: 0 })
@@ -59,77 +57,111 @@ class MyPlanController {
           }
         }
 
-        let slotTotalAmount = 0;
+        // B. Prepare the NEW items from the cart
+        const newItems = group.products.map((p) => ({
+          foodItemId: p.foodItemId,
+          foodName: p.foodname,
+          foodImage: p.image,
+          foodCategory: p.foodcategory,
+          basePrice: p.basePrice || 0,
+          hubPrice: p.actualPrice || 0,
+          preOrderPrice: p.offerPrice || 0,
+          price: Number(p.price),
+          quantity: Number(p.Quantity),
+          totalPrice: Number(p.price) * Number(p.Quantity),
+        }));
 
-        const formattedProducts = group.products.map((p) => {
-          const qty = Number(p.Quantity);
-
-          // const finalPrice = Number(p.price); 
-          const finalPrice = type === "Reserved"
-            ? Number(p.preOrderPrice || p.hubPrice || p.basePrice || 0)
-            : Number(p.hubPrice || p.basePrice || 0);
-          const pTotal = finalPrice * qty;
-
-          slotTotalAmount += pTotal;
-
-          return {
-            foodItemId: p.foodItemId,
-            foodName: p.foodname,
-            foodImage: p.image,
-            foodCategory: p.foodcategory,
-            basePrice: p.basePrice || 0,
-            hubPrice: p.hubPrice || 0, 
-            preOrderPrice: p.preOrderPrice || 0, 
-            // price: finalPrice,
-            quantity: qty,
-            totalPrice: pTotal,
-          };
+        // C. Find Existing Plan for this User+Date+Session
+        let plan = await MyPlanModel.findOne({
+          userId: userId,
+          deliveryDate: group.deliveryDate,
+          session: group.session,
         });
 
-        const planUpdate = {
-          hubId: group.hubId,
-          products: formattedProducts,
-          slotTotalAmount: slotTotalAmount,
-          status: "Pending Payment",
-          orderType: type,
-          paymentDeadline: deadline,
-          delivarylocation: addressDetails?.addressline || "",
-          addressType: addressDetails?.addressType || "",
-          coordinates: {
-            type: "Point",
-            coordinates: addressDetails?.coordinates || [0, 0],
-          },
+        if (plan) {
+          // --- MERGE LOGIC ---
+          // If plan exists, we must merge 'newItems' into 'plan.products'
+          
+          // 1. Update Status logic: If it was skipped/cancelled, reset to Pending so they can pay
+          if(plan.status === 'Skipped' || plan.status === 'Cancelled') {
+              plan.status = "Pending Payment";
+              plan.paymentDeadline = deadline; // Reset deadline
+          }
 
-          studentName: addressDetails?.studentName || "",
-          studentClass: addressDetails?.studentClass || "",
-          studentSection: addressDetails?.studentSection || "",
-        };
+          newItems.forEach((newItem) => {
+            const existingItemIndex = plan.products.findIndex(
+              (p) => p.foodItemId.toString() === newItem.foodItemId.toString()
+            );
 
-        bulkOps.push({
-          updateOne: {
-            filter: {
-              userId: userId,
-              mobileNumber: mobile,
-              username: username,
-              deliveryDate: group.deliveryDate,
-              session: group.session,
+            if (existingItemIndex > -1) {
+              // Product exists: Update quantity and total price
+              plan.products[existingItemIndex].quantity += newItem.quantity;
+              plan.products[existingItemIndex].totalPrice += newItem.totalPrice;
+            } else {
+              // Product does not exist: Push to array
+              plan.products.push(newItem);
+            }
+          });
+
+          // 2. Recalculate Slot Total
+          plan.slotTotalAmount = plan.products.reduce(
+            (sum, p) => sum + p.totalPrice,
+            0
+          );
+          
+          // Note: We DO NOT update address/hubId here. 
+          // Logic: If you are adding to an existing plan, you adhere to that plan's existing location.
+          // If user wants to change location, they use the "Change Address" button.
+
+          await plan.save();
+        } else {
+          // --- CREATE NEW LOGIC ---
+          // If no plan exists, create one with the address details provided
+          const slotTotal = newItems.reduce(
+            (sum, p) => sum + p.totalPrice,
+            0
+          );
+
+          const newPlan = new MyPlanModel({
+            userId,
+            deliveryDate: group.deliveryDate,
+            session: group.session,
+            hubId: group.hubId,
+            products: newItems,
+            slotTotalAmount: slotTotal,
+            status: "Pending Payment",
+            orderType: type,
+            paymentDeadline: deadline,
+            // Address details only set on creation
+            delivarylocation: addressDetails?.addressline || "",
+            coordinates: {
+              type: "Point",
+              coordinates: addressDetails?.coordinates || [0, 0],
             },
-            update: { $set: planUpdate },
-            upsert: true,
-          },
-        });
+            addressType: addressDetails?.addressType || "",
+            studentName: addressDetails?.studentName || "",
+            studentClass: addressDetails?.studentClass || "",
+            studentSection: addressDetails?.studentSection || "",
+            schoolName: addressDetails?.schoolName || "",
+            houseName: addressDetails?.houseName || "",
+            apartmentName: addressDetails?.apartmentName || "",
+            companyName: addressDetails?.companyName || "",
+            customerType: addressDetails?.customerType || "",
+            companyId: addressDetails?.companyId || "",
+          });
+
+          await newPlan.save();
+        }
       }
 
-      if (bulkOps.length > 0) {
-        await MyPlanModel.bulkWrite(bulkOps);
-      }
-
+      // 4. Clear Cart
       await CartModel.deleteMany({ userId: userId });
 
       return res.status(200).json({
         success: true,
-        message: "Items moved to My Plan successfully",
+        message: "Items added/merged to My Plan successfully",
       });
+
     } catch (error) {
       console.error("Error adding to plan:", error);
       return res.status(500).json({ error: "Internal Server Error" });
