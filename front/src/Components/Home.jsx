@@ -31,6 +31,7 @@ import IsVeg from "../assets/isVeg=yes.svg";
 import IsNonVeg from "../assets/isVeg=no.svg";
 import MultiCartDrawer from "./MultiCartDrawer";
 import DateSessionSelector from "./DateSessionSelector";
+import BottomNav from "./BottomNav";
 
 const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
   const navigate = useNavigate();
@@ -78,8 +79,8 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
     }
     // Priority 2: localStorage
     return JSON.parse(
-      localStorage.getItem("currentLocation") ??
-      localStorage.getItem("primaryAddress")
+      localStorage.getItem("primaryAddress")??
+      localStorage.getItem("currentLocation") 
     );
 });
 
@@ -2220,6 +2221,7 @@ const [selectedSession, setSelectedSession] = useState(() => {
           </div>
         </Drawer>
       </div>
+      {/* <BottomNav /> */}
     </div>
   );
 };
