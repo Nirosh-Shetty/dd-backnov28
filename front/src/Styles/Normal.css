@@ -231,7 +231,7 @@
 .portion-tag {
   padding-left: 4px;
   padding-right: 4px;
-  background-color: #e5e7eb;
+  background-color: var(--steel-light, #e8e8e8);
   border-radius: 8px;
   display: flex;
   justify-content: center;

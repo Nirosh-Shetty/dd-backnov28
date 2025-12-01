@@ -233,33 +233,34 @@ const ViewPlanModal = ({
             <div className="plans-item-section">
               <div className="plans-item-content">
                 {/* Header row */}
-                <div className="cart-header">
-                  <div className="header-content">
-                    <div className="header-left">
-                      <div className="header-title">
-                        <div className="title-text">
-                          <div className="title-label">From Kitchen</div>
-                        </div>
+                {/* <div className="cart-header"> */}
+                {/* <div className="header-content"> */}
+                <div className="plan-item-header">
+                  <div className="header-title">
+                    <div className="title-text">
+                      <div className="title-label">From Kitchen</div>
+                    </div>
+                  </div>
+                  <div className="header-right">
+                    <div className="qty-header">
+                      <div className="qty-text">
+                        <div className="title-label">Qty</div>
                       </div>
-                      <div className="header-right">
-                        <div className="qty-header">
-                          <div className="qty-text">
-                            <div className="title-label">Qty</div>
-                          </div>
-                        </div>
-                        <div className="price-text">
-                          <div className="title-label">Price</div>
-                        </div>
-                      </div>
+                    </div>
+                    <div className="price-text">
+                      <div className="title-label">Price</div>
                     </div>
                   </div>
                 </div>
+                {/* </div> */}
+                {/* </div> */}
 
                 {(localPlan.products || []).map((product, index) => (
-                  <div className="cart-item" key={product._id || index}>
-                    <div className="veg-indicator">
-                      <div className="veg-indicator d-flex align-items-center justify-content-center gap-2 flex-row fw-bold">
-                        {index + 1}.{" "}
+                  <div className="plan-item" key={product._id || index}>
+                    {/* <div className="plan-item-content"> */}
+                    <div className="plan-item-details">
+                      <div className="plan-left-left">
+                        {index + 1}.
                         <img
                           src={
                             product?.foodCategory === "Veg" ? IsVeg : IsNonVeg
@@ -268,124 +269,119 @@ const ViewPlanModal = ({
                           className="indicator-icon"
                         />
                       </div>
-                    </div>
-                    <div className="item-content">
-                      <div className="item-details">
-                        <div className="item-name">
-                          <div className="item-name-text">
-                            {product.foodName}
-                          </div>
+                      <div className="plan-left-right">
+                        <div className="plan-item-name">
+                          {/* <div className="item-name-text"> */}
+                          {product.foodName}
+                          {/* </div> */}
                         </div>
-                        <div className="item-tags">
-                          <div className="portion-tag">
-                            <div className="portion-text">
-                              <div className="portion-label">
-                                {product.quantity} Portion
-                                {product.quantity > 1 ? "s" : ""}
-                              </div>
-                            </div>
+                        {/* <div className="item-tags"> */}
+                        <div className="portion-tag">
+                          {/* <div className="portion-text"> */}
+                          <div className="plan-portion-label">
+                            {product.quantity} Portion
+                            {product.quantity > 1 ? "s" : ""}
                           </div>
+                          {/* </div> */}
                         </div>
                       </div>
-                      <div className="item-controls">
-                        {/* qty +/- disabled for now; can be wired to updatePlanProduct API */}
+                      {/* </div> */}
+                    </div>
+                    <div className="plan-item-controls">
+                      {/* qty +/- disabled for now; can be wired to updatePlanProduct API */}
+                      <div className="quantity-control">
                         <div className="quantity-control">
-                          <div className="quantity-control">
-                            <button
-                              className="quantity-btn"
-                              disabled={!isEditable}
-                              onClick={() =>
-                                changeQuantity(
-                                  product.foodItemId?.toString?.() ||
-                                    product.foodItemId,
-                                  -1
-                                )
-                              }
-                            >
-                              <div className="btn-text">-</div>
-                            </button>
-                            <div className="quantity-display">
-                              <div className="quantity-text">
-                                {product.quantity}
-                              </div>
+                          <button
+                            className="quantity-btn"
+                            disabled={!isEditable}
+                            onClick={() =>
+                              changeQuantity(
+                                product.foodItemId?.toString?.() ||
+                                  product.foodItemId,
+                                -1
+                              )
+                            }
+                          >
+                            <div className="btn-text">-</div>
+                          </button>
+                          <div className="quantity-display">
+                            <div className="quantity-text">
+                              {product.quantity}
                             </div>
-                            <button
-                              className="quantity-btn"
-                              disabled={!isEditable}
-                              onClick={() =>
-                                changeQuantity(
-                                  product.foodItemId?.toString?.() ||
-                                    product.foodItemId,
-                                  1
-                                )
-                              }
-                            >
-                              <div className="btn-text">+</div>
-                            </button>
                           </div>
+                          <button
+                            className="quantity-btn"
+                            disabled={!isEditable}
+                            onClick={() =>
+                              changeQuantity(
+                                product.foodItemId?.toString?.() ||
+                                  product.foodItemId,
+                                1
+                              )
+                            }
+                          >
+                            <div className="btn-text">+</div>
+                          </button>
                         </div>
-                        <div className="price-container vertical">
-                          <div className="current-price">
-                            <div className="current-currency">
-                              <div className="current-currency-text">₹</div>
-                            </div>
-                            <div className="current-amount">
-                              <div className="current-amount-text">
-                                {product.totalPrice?.toFixed(2)}
-                              </div>
+                      </div>
+                      <div className="price-container vertical">
+                        <div className="plan-current-price">
+                          <div className="plan-current-currency">
+                            <div className="current-currency-text">₹</div>
+                          </div>
+                          <div className="plan-current-amount">
+                            <div className="current-amount-text">
+                              {product.totalPrice?.toFixed(0)}
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                    {/* </div> */}
                   </div>
                 ))}
 
                 {/* Total row */}
-                <div className="cart-footer">
+                <div className="plan-cart-footer">
                   <div className="add-more-section">
-                    <div className="add-more-btn">
-                      <div className="add-more-content">
-                        <div className="add-more-text-container">
-                          {/* you can wire this to "add more items for this slot" */}
-                          <span
-                            className="add-more-label"
-                            onClick={handleAddMore}
-                          >
-                            Add More
-                          </span>
-                        </div>
-                      </div>
+                    <div className="plan-add-more-btn">
+                      {/* <div className="add-more-content"> */}
+                      {/* <div className="add-more-text-container"> */}
+                      {/* you can wire this to "add more items for this slot" */}
+                      <span className="add-more-label" onClick={handleAddMore}>
+                        Add More
+                      </span>
+                      {/* </div> */}
+                      {/* </div> */}
                     </div>
                   </div>
-                  <div className="total-section">
+                  <div className="plan-total-container">
+ <div className="plan-total-section">
                     <div className="total-label-container">
                       <div className="total-label">Total</div>
                     </div>
                     <div className="total-price-section">
-                      <div className="total-price-content d-flex align-items-center justify-content-center gap-4">
-                        <div className="total-current-price d-flex align-items-center">
-                          <div className="current-currency">
-                            <div className="current-currency-text">₹</div>
-                          </div>
-                          <div className="current-amount">
-                            <div className="current-amount-text">
-                              {localPlan.slotTotalAmount?.toFixed(2)}
-                            </div>
-                          </div>
+                      <div className="current-currency">
+                        <div className="current-currency-text">₹</div>
+                      </div>
+                      <div className="current-amount">
+                        <div className="current-amount-text">
+                          {localPlan.slotTotalAmount?.toFixed(2)}
                         </div>
                       </div>
                     </div>
                   </div>
+                  </div>
+                 
                 </div>
               </div>
             </div>
 
             {/* Delivery Details */}
 
-            <div className="delivery-details-container">
+            <div className="plan-delivery-details-container">
               {/* --- Address Row --- */}
-              <div className="delivery-details-row">
+              <div className="plan-delivery-details-row">
                 {/* Icon */}
                 <div className="delivery-icon-wrapper">
                   <img
@@ -401,10 +397,10 @@ const ViewPlanModal = ({
                 </div>
 
                 {/* Content */}
-                <div className="delivery-content-wrapper">
+                <div className="plan-delivery-content-wrapper">
                   {/* 1. Location Name (e.g. Work, Home, School Name) */}
                   <p
-                    className="select-location-text fw-semibold text-truncate mb-0"
+                    className="text-truncate plan-location-name"
                     style={{ maxWidth: "220px", color: "black" }}
                     title={
                       localPlan?.addressType === "Home"
@@ -433,7 +429,7 @@ const ViewPlanModal = ({
 
                   {/* 2. Full Address */}
                   <p
-                    className="small text-truncate mb-0"
+                    className="text-truncate plan-full-address"
                     style={{
                       maxWidth: "280px",
                       color: "black",
@@ -444,7 +440,7 @@ const ViewPlanModal = ({
                   </p>
 
                   {/* 3. User Name & Mobile */}
-                  <div className="caption-section" data-text-role="Caption">
+                  <div className="plan-user-mobile" data-text-role="Caption">
                     <div className="user-detailss mt-1">
                       {localPlan?.username} | {localPlan?.mobileNumber}
                     </div>
@@ -499,10 +495,8 @@ const ViewPlanModal = ({
                 </div>
               </div>
 
-              <img src={myplanseparator} alt="" className="separator-line"
-               />
+              <img className="separator-line" src={myplanseparator} alt="" />
 
-              {/* --- Handover/Notes Row --- */}
               <div className="delivery-details-row">
                 {/* Icon */}
                 <div className="delivery-icon-wrapper">
@@ -517,7 +511,7 @@ const ViewPlanModal = ({
                 </div>
 
                 {/* Content */}
-                <div className="delivery-content-wrapper">
+                <div className="plan-delivery-content-wrapper">
                   <input
                     type="text"
                     className="delivery-notes-input"
@@ -548,11 +542,8 @@ const ViewPlanModal = ({
                 />
               </button>
               <button
-                // className="confirm-pay-btn"
-                className="pay-btn"
-                style={{
-                  width: "58%",
-                }}
+                className="confirm-pay-btn"
+                // className="pay-btn"
                 onClick={() => handlePayPlan(localPlan, deliveryNotes)}
                 disabled={loading}
               >
@@ -855,7 +846,8 @@ const MyPlan = () => {
         </div>
 
         {/* Tabs */}
-        <div className="tabs-container">
+        <div className="myplan-mid-section">
+ <div className="tabs-container">
           {["today", "tomorrow", "upcoming"].map((tab) => {
             const isActive = selectedTab === tab;
             const display = getTabDateDisplay(tab);
@@ -1037,6 +1029,8 @@ const MyPlan = () => {
             })
           )}
         </div>
+        </div>
+       
       </div>
 
       {selectedPlan && (
