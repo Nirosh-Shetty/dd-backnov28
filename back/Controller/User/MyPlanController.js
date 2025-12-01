@@ -13,7 +13,6 @@ async addToPlan(req, res) {
       if (!userId || !items || items.length === 0) {
         return res.status(400).json({ error: "Invalid data" });
       }
-console.log('addres Line',addressDetails?.addressline);
       // 1. Group Items by "Date|Session" locally
       const groupedSlots = items.reduce((acc, item) => {
         const key = `${item.deliveryDate}|${item.session}`;
