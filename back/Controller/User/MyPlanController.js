@@ -6,15 +6,14 @@ const CouponModel = require("../../Model/Admin/Coupon");
 const moment = require("moment");
 
 class MyPlanController {
- // ... imports remain same
-  async addToPlan(req, res) {
+async addToPlan(req, res) {
     try {
       const { userId, items, addressDetails } = req.body;
 
       if (!userId || !items || items.length === 0) {
         return res.status(400).json({ error: "Invalid data" });
       }
-
+console.log('addres Line',addressDetails?.addressline);
       // 1. Group Items by "Date|Session" locally
       const groupedSlots = items.reduce((acc, item) => {
         const key = `${item.deliveryDate}|${item.session}`;
@@ -37,7 +36,7 @@ class MyPlanController {
         const group = groupedSlots[key];
         const deliveryDateObj = new Date(group.deliveryDate);
 
-        // A. Calculate Deadline & Type (Same logic as before)
+        // A. Calculate Deadline & Type
         const isToday = moment(deliveryDateObj).isSame(now, "day");
         let deadline, type;
 
@@ -57,7 +56,7 @@ class MyPlanController {
           }
         }
 
-        // B. Prepare the NEW items from the cart
+        // B. Prepare the NEW items
         const newItems = group.products.map((p) => ({
           foodItemId: p.foodItemId,
           foodName: p.foodname,
@@ -65,27 +64,28 @@ class MyPlanController {
           foodCategory: p.foodcategory,
           basePrice: p.basePrice || 0,
           hubPrice: p.actualPrice || 0,
-          preOrderPrice: p.offerPrice || 0,
+          preOrderPrice: p.preOrderPrice || 0,
           price: Number(p.price),
           quantity: Number(p.Quantity),
           totalPrice: Number(p.price) * Number(p.Quantity),
         }));
 
-        // C. Find Existing Plan for this User+Date+Session
+        // C. Find Existing Plan for this User+Date+Session AND Location
+        // We check if there is a plan with the SAME delivery address string.
+        // Note: Comparing coordinates strictly can be tricky due to floating point precision, 
+        // so string comparison of the address line is usually safer and sufficient for user intent.
         let plan = await MyPlanModel.findOne({
           userId: userId,
           deliveryDate: group.deliveryDate,
           session: group.session,
+          delivarylocation: addressDetails?.addressline 
         });
 
         if (plan) {
-          // --- MERGE LOGIC ---
-          // If plan exists, we must merge 'newItems' into 'plan.products'
-          
-          // 1. Update Status logic: If it was skipped/cancelled, reset to Pending so they can pay
+          console.log("Found existing plan, updating...");
           if(plan.status === 'Skipped' || plan.status === 'Cancelled') {
               plan.status = "Pending Payment";
-              plan.paymentDeadline = deadline; // Reset deadline
+              plan.paymentDeadline = deadline; 
           }
 
           newItems.forEach((newItem) => {
@@ -94,29 +94,20 @@ class MyPlanController {
             );
 
             if (existingItemIndex > -1) {
-              // Product exists: Update quantity and total price
               plan.products[existingItemIndex].quantity += newItem.quantity;
               plan.products[existingItemIndex].totalPrice += newItem.totalPrice;
             } else {
-              // Product does not exist: Push to array
               plan.products.push(newItem);
             }
           });
 
-          // 2. Recalculate Slot Total
           plan.slotTotalAmount = plan.products.reduce(
             (sum, p) => sum + p.totalPrice,
             0
           );
           
-          // Note: We DO NOT update address/hubId here. 
-          // Logic: If you are adding to an existing plan, you adhere to that plan's existing location.
-          // If user wants to change location, they use the "Change Address" button.
-
           await plan.save();
         } else {
-          // --- CREATE NEW LOGIC ---
-          // If no plan exists, create one with the address details provided
           const slotTotal = newItems.reduce(
             (sum, p) => sum + p.totalPrice,
             0
@@ -132,7 +123,8 @@ class MyPlanController {
             status: "Pending Payment",
             orderType: type,
             paymentDeadline: deadline,
-            // Address details only set on creation
+            
+            // Address details specific to THIS plan
             delivarylocation: addressDetails?.addressline || "",
             coordinates: {
               type: "Point",
@@ -159,7 +151,7 @@ class MyPlanController {
 
       return res.status(200).json({
         success: true,
-        message: "Items added/merged to My Plan successfully",
+        message: "Items added to My Plan successfully",
       });
 
     } catch (error) {
