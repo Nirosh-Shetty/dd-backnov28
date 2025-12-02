@@ -751,12 +751,6 @@
   cursor: pointer;
 }
 
-.progressRow {
-  padding: 16px 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
 
 .stepContainer {
   width: 16%;
@@ -916,6 +910,7 @@
   align-items: center;
   margin-bottom: 20px;
   overflow-x: auto;
+  padding: 0 16px;
 }
 
 .stepContainer {

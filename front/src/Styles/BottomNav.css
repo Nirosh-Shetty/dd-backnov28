@@ -1,0 +1,63 @@
+.bottom-nav-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px; /* Fixed height is important for calculations */
+  background-color: #ffffff;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 9999; /* Very high z-index to stay on top */
+  transition: transform 0.3s ease-in-out;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* When hidden, push it down by its own height */
+.bottom-nav-hidden {
+  transform: translateY(100%);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 5px; /* Adjust for iPhone home indicator area if needed */
+}
+
+.nav-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c0c0c0;
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+
+.nav-item.active .nav-label {
+  color: #6b8e23;
+}
+
+.nav-icon-svg {
+  transition: transform 0.2s;
+}
+
+.nav-item.active .nav-icon-svg {
+  transform: scale(1.1);
+}
+
+@media screen and (min-width: 799px) {
+  .bottom-nav-container{
+    width: 33%;
+    margin: 0 auto;
+  }
+}

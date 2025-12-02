@@ -15,7 +15,7 @@ import myplanseparator from "./../assets/myplanseparator.png";
 import myplanskip from "./../assets/myplanskip.png";
 import myplancancel2 from "./../assets/myplancancelicon.png";
 // import myplanblackedit from "./../assets/myplanblackedit.png";
-
+import BottomNav from "./BottomNav";
 import "../Styles/MyPlan.css";
 
 const formatDate = (isoString) => {
@@ -290,7 +290,11 @@ const ViewPlanModal = ({
                     <div className="plan-item-controls">
                       {/* qty +/- disabled for now; can be wired to updatePlanProduct API */}
                       <div className="quantity-control">
-                        <div className="quantity-control">
+                        <div
+                          className={`${
+                            !isEditable && "disabled"
+                          } quantity-control`}
+                        >
                           <button
                             className="quantity-btn"
                             disabled={!isEditable}
@@ -356,23 +360,22 @@ const ViewPlanModal = ({
                     </div>
                   </div>
                   <div className="plan-total-container">
- <div className="plan-total-section">
-                    <div className="total-label-container">
-                      <div className="total-label">Total</div>
-                    </div>
-                    <div className="total-price-section">
-                      <div className="current-currency">
-                        <div className="current-currency-text">₹</div>
+                    <div className="plan-total-section">
+                      <div className="total-label-container">
+                        <div className="total-label">Total</div>
                       </div>
-                      <div className="current-amount">
-                        <div className="current-amount-text">
-                          {localPlan.slotTotalAmount?.toFixed(2)}
+                      <div className="total-price-section">
+                        <div className="current-currency">
+                          <div className="current-currency-text">₹</div>
+                        </div>
+                        <div className="current-amount">
+                          <div className="current-amount-text">
+                            {localPlan.slotTotalAmount?.toFixed(2)}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  </div>
-                 
                 </div>
               </div>
             </div>
@@ -464,7 +467,7 @@ const ViewPlanModal = ({
                 </div>
 
                 {/* Change Button */}
-                <div className="change-button">
+                {/* <div className="change-button">
                   <div className="change-icon">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -492,7 +495,7 @@ const ViewPlanModal = ({
                       </span>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <img className="separator-line" src={myplanseparator} alt="" />
@@ -847,190 +850,189 @@ const MyPlan = () => {
 
         {/* Tabs */}
         <div className="myplan-mid-section">
- <div className="tabs-container">
-          {["today", "tomorrow", "upcoming"].map((tab) => {
-            const isActive = selectedTab === tab;
-            const display = getTabDateDisplay(tab);
-            const label = tab.charAt(0).toUpperCase() + tab.slice(1);
-            return (
-              <div
-                key={tab}
-                onClick={() => setSelectedTab(tab)}
-                className={`tab-btn ${isActive ? "active" : ""}`}
-              >
-                {/* <div className="tab-btn-content">
+          <div className="tabs-container">
+            {["today", "tomorrow", "upcoming"].map((tab) => {
+              const isActive = selectedTab === tab;
+              const display = getTabDateDisplay(tab);
+              const label = tab.charAt(0).toUpperCase() + tab.slice(1);
+              return (
+                <div
+                  key={tab}
+                  onClick={() => setSelectedTab(tab)}
+                  className={`tab-btn ${isActive ? "active" : ""}`}
+                >
+                  {/* <div className="tab-btn-content">
                   <span>{display.date}</span>
                   <div className="tab-divider" />
                   <span>{display.day}</span>
                 </div>
                 <div className="tab-line" /> */}
-                <h1 className={`tab-label ${isActive ? "active" : ""}`}>
-                  {label}
-                </h1>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Cards */}
-        <div className="plans-list">
-          {currentTabOrders.length === 0 ? (
-            <div className="no-plans-text">No plans for this day yet</div>
-          ) : (
-            currentTabOrders.map((plan) => {
-              const { days, hours } = getTimeRemaining(plan.paymentDeadline);
-              const now = new Date();
-              const deadline = new Date(plan.paymentDeadline);
-              const isBeforeDeadline = now < deadline;
-
-              const isUnpaidEditable =
-                plan.status === "Pending Payment" && isBeforeDeadline;
-
-              const isPaidEditable =
-                plan.status === "Confirmed" && isBeforeDeadline;
-              const isPaidLocked =
-                plan.status === "Confirmed" && !isBeforeDeadline;
-
-              {
-                /* const isConfirmed = plan.status === "Confirmed"; */
-              }
-
-              return (
-                <>
-                  {isUnpaidEditable && (
-                    <div className="reminder-banner">
-                      Confirm plan within {days} days, {hours} hours
-                    </div>
-                  )}
-                  <div
-                    key={plan._id}
-                    className="plan-card"
-                    style={
-                      isUnpaidEditable
-                        ? {
-                            borderTopRightRadius: 0,
-                          }
-                        : {}
-                    }
-                  >
-                    {/* reminder for unpaid before cutoff */}
-
-                    <div className="plan-header">
-                      <div className="plan-session-info">
-                        <h3 className="session-title">{plan.session}</h3>
-                        <div className="delivery-time-text">
-                          {/* static for now; optionally store slot time in DB later */}
-                          Arrives fresh between 12:00 to 01:00PM
-                        </div>
-                      </div>
-                      {plan.status === "Confirmed" && (
-                        <div className="status-badge-confirmed">
-                          ✓ Confirmed
-                        </div>
-                      )}
-                      {plan.status === "Skipped" && (
-                        <div className="status-badge-skipped">Skipped</div>
-                      )}
-                      {plan.status === "Cancelled" && (
-                        <div className="status-badge-canceled">Cancelled</div>
-                      )}
-                    </div>
-
-                    <div className="location-row">
-                      <img
-                        src={myplanlocation}
-                        alt=""
-                        style={{ width: 16, height: 16 }}
-                      />
-                      <div className="location-text">
-                        <h1 className="addressLine1">
-                          {plan?.addressType === "Home"
-                            ? plan?.homeName || "Home"
-                            : plan?.addressType === "PG"
-                            ? plan?.apartmentName || "PG"
-                            : plan?.addressType === "School"
-                            ? plan?.schoolName || "School"
-                            : plan?.addressType === "Company"
-                            ? plan?.companyName || "Company"
-                            : "Unknown"}
-                        </h1>
-                        <p className="addressLine2 text-truncate">
-                          {plan.delivarylocation}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="card-actions">
-                      <div className="view-plan-btn-container">
-                        <button
-                          onClick={() => handleViewPlan(plan)}
-                          className="view-plan-btn"
-                        >
-                          <span>View Plan</span>
-
-                          <img
-                            src={myplancalender}
-                            alt=""
-                            style={{ width: 18 }}
-                          />
-                        </button>
-                      </div>
-
-                      {isUnpaidEditable && (
-                        <button
-                          className="pay-btn"
-                          onClick={() => handlePayPlan(plan)}
-                        >
-                          Pay
-                          <span className="price-pill">
-                            ₹{plan.slotTotalAmount?.toFixed(2)}
-                          </span>
-                        </button>
-                      )}
-
-                      {isPaidEditable && (
-                        <button
-                          className="btn-base btn-primary"
-                          onClick={async () => {
-                            await axios.post(
-                              "http://localhost:7013/api/user/plan/skip-cancel",
-                              {
-                                planId: plan._id,
-                                userId,
-                              }
-                            );
-                            fetchPlans();
-                          }}
-                        >
-                          Cancel
-                        </button>
-                      )}
-                      {/* {true && ( */}
-                      {isPaidLocked && (
-                        <button
-                          className="track-order-btn"
-                          onClick={() => handleTrackOrder(plan)}
-                        >
-                          <span> Track Order</span>
-
-                          <img
-                            style={{
-                              scale: "0.8",
-                            }}
-                            src="/Assets/tracker.svg"
-                            alt=""
-                          />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </>
+                  <h1 className={`tab-label ${isActive ? "active" : ""}`}>
+                    {label}
+                  </h1>
+                </div>
               );
-            })
-          )}
+            })}
+          </div>
+
+          {/* Cards */}
+          <div className="plans-list">
+            {currentTabOrders.length === 0 ? (
+              <div className="no-plans-text">No plans for this day yet</div>
+            ) : (
+              currentTabOrders.map((plan) => {
+                const { days, hours } = getTimeRemaining(plan.paymentDeadline);
+                const now = new Date();
+                const deadline = new Date(plan.paymentDeadline);
+                const isBeforeDeadline = now < deadline;
+
+                const isUnpaidEditable =
+                  plan.status === "Pending Payment" && isBeforeDeadline;
+
+                const isPaidEditable =
+                  plan.status === "Confirmed" && isBeforeDeadline;
+                const isPaidLocked =
+                  plan.status === "Confirmed" && !isBeforeDeadline;
+
+                {
+                  /* const isConfirmed = plan.status === "Confirmed"; */
+                }
+
+                return (
+                  <>
+                    {isUnpaidEditable && (
+                      <div className="reminder-banner">
+                        Confirm plan within {days} days, {hours} hours
+                      </div>
+                    )}
+                    <div
+                      key={plan._id}
+                      className="plan-card"
+                      style={
+                        isUnpaidEditable
+                          ? {
+                              borderTopRightRadius: 0,
+                            }
+                          : {}
+                      }
+                    >
+                      {/* reminder for unpaid before cutoff */}
+
+                      <div className="plan-header">
+                        <div className="plan-session-info">
+                          <h3 className="session-title">{plan.session}</h3>
+                          <div className="delivery-time-text">
+                            {/* static for now; optionally store slot time in DB later */}
+                            Arrives fresh between 12:00 to 01:00PM
+                          </div>
+                        </div>
+                        {plan.status === "Confirmed" && (
+                          <div className="status-badge-confirmed">
+                            ✓ Confirmed
+                          </div>
+                        )}
+                        {plan.status === "Skipped" && (
+                          <div className="status-badge-skipped">Skipped</div>
+                        )}
+                        {plan.status === "Cancelled" && (
+                          <div className="status-badge-canceled">Cancelled</div>
+                        )}
+                      </div>
+
+                      <div className="location-row">
+                        <img
+                          src={myplanlocation}
+                          alt=""
+                          style={{ width: 16, height: 16 }}
+                        />
+                        <div className="location-text">
+                          <h1 className="addressLine1">
+                            {plan?.addressType === "Home"
+                              ? plan?.homeName || "Home"
+                              : plan?.addressType === "PG"
+                              ? plan?.apartmentName || "PG"
+                              : plan?.addressType === "School"
+                              ? plan?.schoolName || "School"
+                              : plan?.addressType === "Work"
+                              ? plan?.companyName || "Company"
+                              : "Unknown"}
+                          </h1>
+                          <p className="addressLine2 text-truncate">
+                            {plan.delivarylocation}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="card-actions">
+                        <div className="view-plan-btn-container">
+                          <button
+                            onClick={() => handleViewPlan(plan)}
+                            className="view-plan-btn"
+                          >
+                            <span>View Plan</span>
+
+                            <img
+                              src={myplancalender}
+                              alt=""
+                              style={{ width: 18 }}
+                            />
+                          </button>
+                        </div>
+
+                        {isUnpaidEditable && (
+                          <button
+                            className="pay-btn"
+                            onClick={() => handlePayPlan(plan)}
+                          >
+                            Pay
+                            <span className="price-pill">
+                              ₹{plan.slotTotalAmount?.toFixed(2)}
+                            </span>
+                          </button>
+                        )}
+
+                        {isPaidEditable && (
+                          <button
+                            className="btn-base btn-primary"
+                            onClick={async () => {
+                              await axios.post(
+                                "http://localhost:7013/api/user/plan/skip-cancel",
+                                {
+                                  planId: plan._id,
+                                  userId,
+                                }
+                              );
+                              fetchPlans();
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        )}
+                        {isPaidLocked && (
+                        // {true && (
+                          <button
+                            className="track-order-btn"
+                            onClick={() => handleTrackOrder(plan)}
+                          >
+                            <span> Track Order</span>
+
+                            <img
+                              style={{
+                                scale: "0.8",
+                              }}
+                              src="/Assets/tracker.svg"
+                              alt=""
+                            />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                );
+              })
+            )}
+          </div>
         </div>
-        </div>
-       
       </div>
 
       {selectedPlan && (
@@ -1055,10 +1057,10 @@ const MyPlan = () => {
         size="lg"
         centered
       >
-        <Modal.Header closeButton>
+        {/* <Modal.Header closeButton>
           <Modal.Title>Tracking your meal</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        </Modal.Header> */}
+        <Modal.Body className="track-order-modal-body">
           {currentTrackedOrder &&
             (() => {
               const progressSteps = [
@@ -1090,10 +1092,26 @@ const MyPlan = () => {
                 currentStatusIndex >= stepIndex ? "#FFFFFF" : "#2C2C2C";
               const getConnectorFill = (stepIndex) =>
                 currentStatusIndex >= stepIndex ? "#6B8E23" : "#C0C0C0";
-
+    const phoneNumber = "7204188504";
+  const message = "Hello! I need assistance.";
+  const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+    message
+  )}`;
               return (
-                <div className="card" style={{ paddingTop: 10 }}>
-                  <div className="trackingTopRow">
+                <>
+                  <div className="track-order-header">
+                    <h4 className="track-order-title">Tracking your meal</h4>
+                    <button
+                      onClick={() => {
+                        setTrackModalVisible(false);
+                        setCurrentTrackedOrder(null);
+                      }}
+                      className="track-close-modal-btn"
+                    >
+                      <img src={myplancancel2} alt="" style={{ width: 24 }} />
+                    </button>
+                  </div>
+                  <div className="trackingTopRow1">
                     <div>
                       <div className="detailsorder" style={{ fontWeight: 700 }}>
                         ORDER ID : <span>{currentTrackedOrder.orderId}</span>
@@ -1102,11 +1120,14 @@ const MyPlan = () => {
                         Summary: {totalItems} items, ₹
                         {currentTrackedOrder.total}
                       </div>
-                      <div className="detailsorder" style={{ marginTop: 5 }}>
+                      {/* <div className="detailsorder" style={{ marginTop: 5 }}>
                         Status: <b>{displayStatus}</b>
-                      </div>
+                      </div> */}
                     </div>
                     {/* Help link if needed */}
+                    <a href={whatsappLink} className="helpLinkWrapper">
+                      <div className="helpLink">Need Help?</div>
+                    </a>
                   </div>
                   {/* Progress bar as in your UI */}
                   <div className="progressRow">
@@ -1258,26 +1279,16 @@ const MyPlan = () => {
                   </div>
                   <div className="etaText" style={{ marginTop: 16 }}>
                     Your meal is scheduled for{" "}
-                    <span style={{ fontWeight: "bold" }}>
+                    <span style={{ fontWeight: "bold", color: "black" }}>
                       {currentTrackedOrder.eta}
                     </span>
                   </div>
-                </div>
+                </>
               );
             })()}
         </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setTrackModalVisible(false);
-              setCurrentTrackedOrder(null);
-            }}
-          >
-            Close
-          </Button>
-        </Modal.Footer>
       </Modal>
+      <BottomNav />
     </div>
   );
 };

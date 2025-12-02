@@ -31,12 +31,12 @@ import IsVeg from "../assets/isVeg=yes.svg";
 import IsNonVeg from "../assets/isVeg=no.svg";
 import MultiCartDrawer from "./MultiCartDrawer";
 import DateSessionSelector from "./DateSessionSelector";
-import BottomNav from "./BottomNav";
+// import BottomNav from "./BottomNav";
 
 const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
   const navigate = useNavigate();
-  const location = useLocation(); 
-  
+  const location = useLocation();
+
   const { wallet, transactions, loading, walletSeting, getorderByCustomerId } =
     useContext(WalletContext);
 
@@ -72,28 +72,28 @@ const Home = ({ selectArea, setSelectArea, Carts, setCarts }) => {
       Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())
     );
   };
- const [address, setAddress] = useState(() => {
+  const [address, setAddress] = useState(() => {
     // Priority 1: Address passed from "Add More"
     if (location.state?.overrideAddress) {
-        return location.state.overrideAddress;
+      return location.state.overrideAddress;
     }
     // Priority 2: localStorage
     return JSON.parse(
-      localStorage.getItem("primaryAddress")??
-      localStorage.getItem("currentLocation") 
+      localStorage.getItem("primaryAddress") ??
+        localStorage.getItem("currentLocation")
     );
-});
+  });
 
-// Also update your selectedDate/Session initialization (you might have done this already)
-const [selectedDate, setSelectedDate] = useState(() => {
+  // Also update your selectedDate/Session initialization (you might have done this already)
+  const [selectedDate, setSelectedDate] = useState(() => {
     if (location.state?.targetDate) return new Date(location.state.targetDate);
     return getNormalizedToday();
-});
+  });
 
-const [selectedSession, setSelectedSession] = useState(() => {
+  const [selectedSession, setSelectedSession] = useState(() => {
     if (location.state?.targetSession) return location.state.targetSession;
     return "Lunch";
-});
+  });
   const [allHubMenuData, setAllHubMenuData] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
   // const [isMultiCartOpen, setIsMultiCartOpen] = useState(false);
@@ -876,7 +876,7 @@ const [selectedSession, setSelectedSession] = useState(() => {
     try {
       const addressDetails = {
         addressline: `${address.fullAddress}`,
-        addressType: addresstype,
+        addressType: address.addressType || "",
         coordinates: address.location?.coordinates || [0, 0],
         hubId: address.hubId || "",
         // Student info (if available)
@@ -1620,14 +1620,14 @@ const [selectedSession, setSelectedSession] = useState(() => {
                           {item?.foodTags && (
                             <div className="food-tag-container">
                               {item.foodTags.map((tag) => (
-                                <div
+                                <span
                                   className="food-tag-pill"
                                   style={{
                                     backgroundColor: tag.tagColor,
                                   }}
                                 >
                                   {tag.tagName}
-                                </div>
+                                </span>
                               ))}
                             </div>
                           )}
@@ -1679,34 +1679,21 @@ const [selectedSession, setSelectedSession] = useState(() => {
                           </div>
 
                           {address && (
-                            <div className="parentdivqty">
-                              <div className="h-100 d-flex justify-content-center align-items-center">
-                                <span
-                                  style={{
-                                    background:
-                                      matchedLocation?.Remainingstock &&
-                                      "rgba(255, 179, 0, 0.25)",
-                                  }}
-                                >
-                                  {isPreOrder && (
-                                    <div
-                                      className="guaranteed-label"
-                                      style={{
-                                        fontSize: 11,
-                                        color: "#6B8E23",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      {" "}
-                                      Guaranteed Availability{" "}
-                                    </div>
-                                  )}
-                                  {checkOf && <BiSolidOffer color="green" />}
-                                  {!isPreOrder &&
-                                    `${matchedLocation?.Remainingstock || 0}
-                                  servings Left`}
-                                </span>
-                              </div>
+                            <div>
+                              {isPreOrder && (
+                                <div className="guaranteed-label">
+                                  Guaranteed Availability{" "}
+                                </div>
+                              )}
+                              {checkOf && <BiSolidOffer color="green" />}
+                              {!isPreOrder && (
+                                <div className="remaining-stock-label">
+ {`${
+                                    matchedLocation?.Remainingstock || 0
+                                  } servings Left`}
+                                </div>
+                              )}
+                              {/* </div> */}
                             </div>
                           )}
 
@@ -1745,15 +1732,19 @@ const [selectedSession, setSelectedSession] = useState(() => {
                                   }}
                                 >
                                   {isPreOrder ? (
-                                    <span className="add-to-cart-btn-text">
-                                      Pick
-                                      <br /> {`for ${
-    new Date(item.deliveryDate).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short'
-    })
-  }`}
+                                    <div className="pick-btn-text">
+                                    <span className="pick-btn-text1">
+                                      PICK
                                     </span>
+                                    <span className="pick-btn-text2">
+                                      {`for ${new Date(
+                                        item.deliveryDate
+                                      ).toLocaleDateString("en-GB", {
+                                        day: "2-digit",
+                                        month: "short",
+                                      })}`}
+                                    </span>
+                                    </div>
                                   ) : (
                                     <span className="add-to-cart-btn-text">
                                       Add
@@ -2111,10 +2102,8 @@ const [selectedSession, setSelectedSession] = useState(() => {
                                   style={{ marginRight: "5px" }}
                                 />
                               )}{" "}
-                                  {!isPreOrderDrawer &&
-                                  `${stockCount} servings left!`
-                                  }
-                              
+                              {!isPreOrderDrawer &&
+                                `${stockCount} servings left!`}
                             </>
                           ) : (
                             "Sold Out"

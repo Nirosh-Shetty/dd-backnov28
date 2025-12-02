@@ -20,7 +20,7 @@ async addToPlan(req, res) {
           acc[key] = {
             deliveryDate: item.deliveryDate,
             session: item.session,
-            hubId: item.locationInfo?.hubId || "UNKNOWN",
+            hubId: addressDetails?.hubId || "UNKNOWN",
             products: [],
           };
         }

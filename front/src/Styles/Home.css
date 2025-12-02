@@ -213,6 +213,33 @@
   text-transform: uppercase;
 }
 
+.pick-btn-text{
+  font-family: Inter;
+
+  /* text-transform: uppercase; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 3px;
+}
+.pick-btn-text1{
+   font-size: 16px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 22px; 
+  letter-spacing: -0.51px;
+}
+ 
+.pick-btn-text2{
+   font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 11px; 
+  letter-spacing: -0.36px;
+  color:var(--secondary-text);
+}
+
 .sold-out-btn {
   width: 87% !important;
   height: 44px;
@@ -471,6 +498,13 @@
   color: green;
   font-size: 16px;
   font-weight: 600;
+}
+
+.food-tag-pill{
+  border: 0.1px solid var(--secondary-text);
+  border-radius: 4px;
+  padding: 1px 8px;
+  font-size: 10px;
 }
 
 .praparing-food {
@@ -1873,6 +1907,32 @@ input[type="number"] {
   }
 }
 
+.guaranteed-label{
+  font-size: 10px;
+  color:var(--secondary-text);
+  border:1px solid var(--success-green);
+  border-radius:8px;
+  padding:1px 6px;
+  width: 80%;
+  margin: auto;
+  margin-bottom: 4px;
+  display:flex;
+  align-items: center;
+  justify-items: center;
+}
+.remaining-stock-label{
+ font-size: 10px;
+  color:var(--secondary-text);
+  border:1px solid var(--warm-beige);
+  border-radius:8px;
+  padding:1px 6px;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 4px;
+  display:flex;
+  align-items: center;
+  justify-items: center;
+}
 /* .sticky-menu-header {
   position: sticky;
   top: 80px; 
